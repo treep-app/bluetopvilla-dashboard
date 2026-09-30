@@ -17,6 +17,13 @@ import type {
   EventType,
   RoomTypeDetail,
   StaffMember,
+  Employee,
+  EmployeeDetail,
+  AttendanceRow,
+  LeaveRequestRow,
+  LeaveCalendar,
+  CreateEmployeeInput,
+  UpdateEmployeeInput,
 } from '../types/hotel';
 import { request } from './authService';
 
@@ -170,6 +177,25 @@ export const api = {
   staff: () => request<StaffMember[]>('/admin/staff'),
   createStaff: (body: { email: string; firstName: string; lastName: string; role: BackendRole; password: string }) =>
     request<StaffMember>('/admin/staff', post(body)),
+  employees: () => request<Employee[]>('/admin/employees'),
+  employee: (id: string) => request<EmployeeDetail>(`/admin/employees/${id}`),
+  attendance: (id: string, from?: string, to?: string) =>
+    request<AttendanceRow[]>(`/admin/employees/${id}/attendance${query({ from, to })}`),
+  attendanceCheckIn: (id: string) => request<AttendanceRow>(`/admin/employees/${id}/attendance/check-in`, post({})),
+  attendanceCheckOut: (id: string) => request<AttendanceRow>(`/admin/employees/${id}/attendance/check-out`, post({})),
+  attendanceMark: (id: string, body: { date: string; kind: 'PRESENT' | 'LATE' | 'ABSENT' | 'HOLIDAY'; reason?: string }) =>
+    request<AttendanceRow>(`/admin/employees/${id}/attendance/mark`, post(body)),
+  leaveRequests: () => request<LeaveRequestRow[]>('/admin/leave-requests'),
+  leaveCalendar: (from?: string, to?: string) =>
+    request<LeaveCalendar>(`/admin/leave-calendar${query({ from, to })}`),
+  requestLeave: (id: string, body: { startDate: string; endDate?: string; leaveType: string; reason?: string }) =>
+    request<AttendanceRow>(`/admin/employees/${id}/leave`, post(body)),
+  decideLeave: (entryId: string, approve: boolean) =>
+    request<AttendanceRow>(`/admin/leave-requests/${entryId}`, patch({ approve })),
+  createEmployee: (body: CreateEmployeeInput) => request<Employee>('/admin/employees', post(body)),
+  updateEmployee: (id: string, body: UpdateEmployeeInput) =>
+    request<Employee>(`/admin/employees/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  deactivateEmployee: (id: string) => request<Employee>(`/admin/employees/${id}`, { method: 'DELETE' }),
 
   enquiries: () => request<Enquiries>('/admin/enquiries'),
   updateVenueEnquiry: (id: string, status: EnquiryStatus) => request(`/admin/enquiries/venue/${id}`, patch({ status })),

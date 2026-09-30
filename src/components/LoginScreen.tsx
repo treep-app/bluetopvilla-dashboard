@@ -60,9 +60,11 @@ export const LoginScreen: React.FC = () => {
     <div className="min-h-screen bg-[#faf8ff] flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-[#bfc7d2]/40 overflow-hidden animate-in zoom-in-95 duration-200">
         <div className="p-8 bg-[#262f4c] text-[#eff0ff] text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-[#007bb9] flex items-center justify-center mx-auto shadow-md">
-            <span className="material-symbols-outlined text-white text-[28px]">villa</span>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Blue Top Villa"
+            className="h-10 w-auto mx-auto shadow-md"
+          />
           <h1 className="text-xl font-bold tracking-tight">Blue Top Villa Dashboard</h1>
           <p className="text-xs text-[#bfc7d2]">
             Front desk, housekeeping, rates and enquiries

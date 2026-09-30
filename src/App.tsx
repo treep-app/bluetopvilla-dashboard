@@ -12,6 +12,8 @@ import { TapeChartView } from './views/TapeChartView';
 import { RoomTypesView } from './views/RoomTypesView';
 import { RoomMatrixView } from './views/RoomMatrixView';
 import { StaffView } from './views/StaffView';
+import { EmployeesSection } from './views/EmployeeDetailPage';
+import { LeaveRequestsView } from './views/LeaveRequestsView';
 import { EnquiriesView } from './views/EnquiriesView';
 import { EventsContentView } from './views/EventsContentView';
 
@@ -29,7 +31,10 @@ const MainLayout: React.FC = () => {
   const [selectedScreen, setScreen] = useState<NavScreen>('dashboard');
   // Content editors can't see operations — send them to the one screen they can use.
   const screen: NavScreen =
-    hasPermission('canViewOperations') || selectedScreen === 'enquiries' || selectedScreen === 'events-content'
+    hasPermission('canViewOperations') ||
+    selectedScreen === 'enquiries' ||
+    selectedScreen === 'events-content' ||
+    (selectedScreen === 'leave' && hasPermission('canViewStaff'))
       ? selectedScreen
       : 'enquiries';
 
@@ -87,6 +92,8 @@ const MainLayout: React.FC = () => {
           {screen === 'enquiries' && <EnquiriesView />}
           {screen === 'events-content' && <EventsContentView />}
           {screen === 'staff' && <StaffView />}
+          {screen === 'employees' && <EmployeesSection />}
+          {screen === 'leave' && <LeaveRequestsView />}
         </main>
       </div>
 

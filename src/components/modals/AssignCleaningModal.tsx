@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApi, useMutation } from '../../hooks/useApi';
 import { api } from '../../services/api';
 import { ROOM_STATUS_LABELS } from '../../lib/format';
+import { HousekeeperPicker } from '../HousekeeperPicker';
 import { buttonClass, Empty, ErrorNote, Field, inputClass, Loading, Modal } from '../ui';
 
 export const AssignCleaningModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -38,7 +39,7 @@ export const AssignCleaningModal: React.FC<{ onClose: () => void }> = ({ onClose
             </select>
           </Field>
           <Field label="Housekeeper">
-            <input required maxLength={80} placeholder="Name of the person cleaning" className={inputClass} value={housekeeper} onChange={(event) => setHousekeeper(event.target.value)} />
+            <HousekeeperPicker value={housekeeper} onChange={setHousekeeper} />
           </Field>
           <div className="pt-2 flex justify-between">
             <button type="button" onClick={onClose} className={buttonClass.secondary}>

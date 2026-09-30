@@ -14,6 +14,8 @@ export type NavScreen =
   | 'housekeeping'
   | 'maintenance'
   | 'rates'
+  | 'employees'
+  | 'leave'
   | 'enquiries'
   | 'events-content'
   | 'staff';
@@ -32,7 +34,11 @@ type Counts = { arrivalsPending: number; housekeeping: number; outOfService: num
 const SECTIONS: Array<{ title: string; items: NavItem[] }> = [
   {
     title: 'Overview',
-    items: [{ screen: 'dashboard', label: 'Dashboard', icon: 'dashboard', permission: 'canViewOperations' }],
+    items: [
+      { screen: 'dashboard', label: 'Dashboard', icon: 'dashboard', permission: 'canViewOperations' },
+      { screen: 'employees', label: 'Employees', icon: 'badge', permission: 'canViewStaff' },
+      { screen: 'leave', label: 'Leave requests', icon: 'event_busy', permission: 'canViewStaff' },
+    ],
   },
   {
     title: 'Reservations',
@@ -114,9 +120,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#262f4c] z-50 flex flex-col select-none">
       <div className="h-16 px-4 flex items-center gap-2.5 border-b border-[#707881]/20">
-        <div className="w-8 h-8 rounded-lg bg-[#007bb9] flex items-center justify-center shadow-xs">
-          <Icon name="villa" className="text-white text-[20px]" />
-        </div>
+        <img
+          src="/logo.png"
+          alt="Blue Top Villa"
+          className="h-8 w-auto rounded-md bg-white/95 px-1.5 py-1 shadow-xs"
+        />
         <div className="min-w-0">
           <div className="font-bold text-sm text-[#eff0ff] leading-tight truncate">{property?.name ?? 'Dashboard'}</div>
           <div className="text-[11px] text-[#bfc7d2] leading-none truncate">{property?.address ?? 'Hotel operations'}</div>

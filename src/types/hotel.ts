@@ -167,6 +167,127 @@ export interface StaffMember {
   createdAt: string;
 }
 
+export interface Employee {
+  id: string;
+  userId: string;
+  employeeCode: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
+  roles: BackendRole[];
+  position: string;
+  department: string;
+  hireDate: string;
+  salary: number | null;
+  active: boolean;
+  annualLeaveDays: number;
+  notes: string | null;
+  createdAt: string;
+}
+
+export interface LeaveBalance {
+  entitlement: number;
+  used: number;
+  pending: number;
+  remaining: number;
+  year: number;
+}
+
+export interface CreateEmployeeInput {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  role: BackendRole;
+  password: string;
+  position: string;
+  department: string;
+  hireDate: string;
+  salary?: number;
+  notes?: string;
+}
+
+export interface EmployeeAuditEntry {
+  id: string;
+  action: string;
+  entity: string;
+  entityId: string | null;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  actor: string;
+  by: 'self' | 'other';
+}
+
+export interface EmployeeBookingSummary {
+  id: string;
+  reference: string;
+  status: BookingStatus;
+  guestName: string | null;
+  totalAmount: number;
+  createdAt: string;
+}
+
+export type AttendanceKind = 'PRESENT' | 'LATE' | 'ABSENT' | 'LEAVE' | 'HOLIDAY';
+export type LeaveStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface AttendanceRow {
+  id: string;
+  employeeId: string;
+  kind: AttendanceKind;
+  date: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  leaveStatus: LeaveStatus | null;
+  leaveType: string | null;
+  endDate: string | null;
+  reason: string | null;
+  createdAt: string;
+}
+
+export interface LeaveRequestRow extends AttendanceRow {
+  employee: { id: string; employeeCode: string; name: string };
+  leaveBalance: LeaveBalance | null;
+}
+
+export interface LeaveCalendarEntry {
+  id: string;
+  employeeId: string;
+  employeeCode: string;
+  name: string;
+  position: string;
+  department: string;
+  leaveType: string;
+  startDate: string;
+  endDate: string;
+  reason: string | null;
+}
+
+export interface LeaveCalendar {
+  from: string;
+  to: string;
+  entries: LeaveCalendarEntry[];
+}
+
+export interface EmployeeDetail extends Employee {
+  leaveBalance: LeaveBalance;
+  stats: { bookingsCreated: number };
+  audit: EmployeeAuditEntry[];
+  bookings: EmployeeBookingSummary[];
+}
+
+export interface UpdateEmployeeInput {
+  position?: string;
+  department?: string;
+  hireDate?: string;
+  salary?: number | null;
+  notes?: string;
+  active?: boolean;
+  annualLeaveDays?: number;
+  role?: BackendRole;
+  phone?: string;
+}
+
 export interface VenueEnquiry {
   id: string;
   reference: string;

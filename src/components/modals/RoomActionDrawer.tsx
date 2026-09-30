@@ -4,6 +4,7 @@ import { useApi, useMutation } from '../../hooks/useApi';
 import { api } from '../../services/api';
 import type { HousekeepingStatus } from '../../types/hotel';
 import { formatDateTime, formatDay, formatMoney, ROOM_STATUS_BADGE, ROOM_STATUS_LABELS } from '../../lib/format';
+import { HousekeeperPicker } from '../HousekeeperPicker';
 import { buttonClass, Drawer, ErrorNote, Field, inputClass, Loading } from '../ui';
 
 interface RoomActionDrawerProps {
@@ -122,13 +123,9 @@ export const RoomActionDrawer: React.FC<RoomActionDrawerProps> = ({ roomId, onCl
 
           <Field label="Housekeeper">
             <div className="flex gap-2">
-              <input
-                maxLength={80}
-                className={inputClass}
-                placeholder="Name"
-                value={housekeeperValue}
-                onChange={(event) => setHousekeeper(event.target.value)}
-              />
+              <div className="flex-1">
+                <HousekeeperPicker value={housekeeperValue} onChange={setHousekeeper} />
+              </div>
               <button
                 disabled={update.pending || housekeeperValue === (room.housekeeper ?? '')}
                 onClick={() => void update.run(room.id, { housekeeper: housekeeperValue.trim() || null })}
