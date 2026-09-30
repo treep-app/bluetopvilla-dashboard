@@ -132,6 +132,16 @@ interface SidebarProps {
   onOpenNewReservation: () => void;
 }
 
+/** Drop Google Plus Code prefix (e.g. GHCC+G2) — show city/country only under the brand. */
+function sidebarSubtitle(address: string | null | undefined) {
+  if (!address?.trim()) return 'Hotel operations';
+  const parts = address.split(',').map((part) => part.trim()).filter(Boolean);
+  if (parts.length >= 2 && /\+/.test(parts[0])) {
+    return parts.slice(1).join(', ');
+  }
+  return address;
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onOpenNewReservation }) => {
   const { currentUser, property, hasPermission } = useHotel();
   const canViewOperations = hasPermission('canViewOperations');
@@ -147,14 +157,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-[#1b2c38] z-50 flex flex-col select-none">
       <div className="h-16 px-4 flex items-center gap-2.5 border-b border-[#786f62]/20">
-        <img
-          src="/logo.png"
-          alt="Blue Top Villa"
-          className="h-8 w-auto rounded-md bg-white/95 px-1.5 py-1 shadow-xs"
-        />
+        <img src="/logo.png" alt="Blue Top Villa" className="h-8 w-auto shrink-0" />
         <div className="min-w-0">
           <div className="font-bold text-sm text-[#f4efe6] leading-tight truncate">{property?.name ?? 'Dashboard'}</div>
-          <div className="text-[11px] text-[#cfc4b4] leading-none truncate">{property?.address ?? 'Hotel operations'}</div>
+          <div className="text-[11px] text-[#cfc4b4] leading-none truncate">{sidebarSubtitle(property?.address)}</div>
         </div>
       </div>
 
