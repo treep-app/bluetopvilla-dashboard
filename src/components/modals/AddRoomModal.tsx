@@ -28,7 +28,7 @@ export const AddRoomModal: React.FC<{ onClose: () => void }> = ({ onClose }) => 
       {!types.data ? (
         <Loading />
       ) : !types.data.length ? (
-        <p className="text-[#707881]">Create a room type first under Room types &amp; rates.</p>
+        <p className="text-[#786f62]">Create a room type first under Room types &amp; rates.</p>
       ) : (
         <form onSubmit={submit} className="space-y-3">
           <Field label="Room type">
@@ -59,7 +59,7 @@ export const AddRoomModal: React.FC<{ onClose: () => void }> = ({ onClose }) => 
             </Field>
           </div>
           {type ? (
-            <p className="text-[11px] text-[#707881]">
+            <p className="text-[11px] text-[#786f62]">
               {type.name} will have {type.units + 1} room(s) to sell per night
               {type.isActive ? ' on the website' : ' once the room type is shown on the website'}.
             </p>

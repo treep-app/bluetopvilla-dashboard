@@ -40,7 +40,7 @@ export const HousekeeperPicker: React.FC<{
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
-        <p className="text-[10px] text-[#707881]">
+        <p className="text-[10px] text-[#786f62]">
           No housekeeping employees registered yet — onboard them under Employees to pick from a list.
         </p>
       </div>

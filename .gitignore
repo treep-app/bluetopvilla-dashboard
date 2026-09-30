@@ -19,3 +19,4 @@ coverage/
 
 # stray lockfile from another package manager (this project uses bun)
 package-lock.json
+.vercel

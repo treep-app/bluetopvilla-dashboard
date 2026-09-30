@@ -19,12 +19,12 @@ const mondayOf = (date: Date) => {
 };
 
 const LEAVE_COLORS: Record<string, string> = {
-  annual: 'bg-[#006194] text-white',
+  annual: 'bg-[#d99d26] text-white',
   sick: 'bg-red-500 text-white',
   maternity: 'bg-purple-500 text-white',
   paternity: 'bg-purple-400 text-white',
-  compassionate: 'bg-[#262f4c] text-white',
-  unpaid: 'bg-[#707881] text-white',
+  compassionate: 'bg-[#1b2c38] text-white',
+  unpaid: 'bg-[#786f62] text-white',
 };
 
 const LeaveCalendarCard: React.FC = () => {
@@ -47,13 +47,13 @@ const LeaveCalendarCard: React.FC = () => {
   return (
     <Card className="p-4 space-y-3">
       <div className="flex flex-wrap items-center gap-3">
-        <h2 className="text-base font-bold text-[#111a36] mr-auto">Who is off</h2>
+        <h2 className="text-base font-bold text-[#161410] mr-auto">Who is off</h2>
         <button onClick={() => setWeekOffset(weekOffset - 1)} className={buttonClass.secondary} title="Previous week">
           <Icon name="chevron_left" />
         </button>
-        <span className="text-xs font-bold text-[#111a36] min-w-[190px] text-center">
+        <span className="text-xs font-bold text-[#161410] min-w-[190px] text-center">
           {new Date(weekStart).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })} — {new Date(weekEnd).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}
-          {isThisWeek && <span className="ml-1.5 text-[#006194]">(this week)</span>}
+          {isThisWeek && <span className="ml-1.5 text-[#d99d26]">(this week)</span>}
         </span>
         <button
           onClick={() => setWeekOffset(weekOffset + 1)}
@@ -64,7 +64,7 @@ const LeaveCalendarCard: React.FC = () => {
           <Icon name="chevron_right" />
         </button>
         {weekOffset !== 0 && (
-          <button onClick={() => setWeekOffset(0)} className="text-[11px] font-bold text-[#006194] hover:underline">
+          <button onClick={() => setWeekOffset(0)} className="text-[11px] font-bold text-[#d99d26] hover:underline">
             Today
           </button>
         )}
@@ -81,19 +81,19 @@ const LeaveCalendarCard: React.FC = () => {
               const isToday = iso(day) === iso(new Date());
               const onLeave = calendar.data ? onLeaveOn(calendar.data.entries, day) : [];
               return (
-                <div key={iso(day)} className={`rounded-lg border p-2 min-h-[140px] ${isToday ? 'border-[#006194] bg-[#006194]/5' : 'border-[#ebedff] bg-white'}`}>
-                  <div className={`text-[10px] font-bold uppercase tracking-wide mb-1.5 ${isToday ? 'text-[#006194]' : 'text-[#707881]'}`}>
+                <div key={iso(day)} className={`rounded-lg border p-2 min-h-[140px] ${isToday ? 'border-[#d99d26] bg-[#d99d26]/5' : 'border-[#e7ddd0] bg-white'}`}>
+                  <div className={`text-[10px] font-bold uppercase tracking-wide mb-1.5 ${isToday ? 'text-[#d99d26]' : 'text-[#786f62]'}`}>
                     {day.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit' })}
                   </div>
                   {!onLeave.length ? (
-                    <div className="text-[10px] text-[#bfc7d2]">—</div>
+                    <div className="text-[10px] text-[#cfc4b4]">—</div>
                   ) : (
                     <div className="space-y-1">
                       {onLeave.map((entry) => (
                         <div
                           key={`${entry.id}-${iso(day)}`}
                           title={`${entry.name} — ${entry.leaveType} leave${entry.reason ? `: ${entry.reason}` : ''}`}
-                          className={`px-1.5 py-1 rounded text-[9px] font-bold leading-tight ${LEAVE_COLORS[entry.leaveType] ?? 'bg-[#007bb9] text-white'}`}
+                          className={`px-1.5 py-1 rounded text-[9px] font-bold leading-tight ${LEAVE_COLORS[entry.leaveType] ?? 'bg-[#e8b03a] text-white'}`}
                         >
                           {entry.name.split(' ')[0]}
                           <div className="font-normal opacity-80">{entry.leaveType}</div>
@@ -109,7 +109,7 @@ const LeaveCalendarCard: React.FC = () => {
       )}
 
       {calendar.data && !calendar.data.entries.length && (
-        <p className="text-[11px] text-[#707881] text-center">Nobody on approved leave this week.</p>
+        <p className="text-[11px] text-[#786f62] text-center">Nobody on approved leave this week.</p>
       )}
     </Card>
   );
@@ -184,7 +184,7 @@ export const LeaveRequestsView: React.FC = () => {
         ].map((stat) => (
           <Card key={stat.label} className="p-4">
             <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-            <div className="text-[11px] text-[#707881] mt-1">{stat.label}</div>
+            <div className="text-[11px] text-[#786f62] mt-1">{stat.label}</div>
           </Card>
         ))}
       </div>
@@ -197,7 +197,7 @@ export const LeaveRequestsView: React.FC = () => {
       {/* Filters */}
       <Card className="p-4 flex flex-wrap items-center gap-3">
         <div className="flex-1 min-w-[220px] relative">
-          <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707881] text-[18px]" />
+          <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#786f62] text-[18px]" />
           <input
             className={`${inputClass} pl-9`}
             placeholder="Search employee, type, reason…"
@@ -237,25 +237,25 @@ export const LeaveRequestsView: React.FC = () => {
             return (
               <Card key={row.id} className="p-4 flex flex-wrap items-center gap-4">
                 <div className="min-w-[180px] flex-1">
-                  <div className="font-bold text-sm text-[#111a36]">{row.employee.name}</div>
-                  <div className="text-[11px] text-[#707881] font-mono">{row.employee.employeeCode}</div>
+                  <div className="font-bold text-sm text-[#161410]">{row.employee.name}</div>
+                  <div className="text-[11px] text-[#786f62] font-mono">{row.employee.employeeCode}</div>
                 </div>
 
                 <div className="min-w-[160px]">
-                  <div className="text-xs font-semibold text-[#111a36] capitalize">{row.leaveType} leave</div>
-                  <div className="text-[11px] text-[#707881]">
+                  <div className="text-xs font-semibold text-[#161410] capitalize">{row.leaveType} leave</div>
+                  <div className="text-[11px] text-[#786f62]">
                     {fmt(row.date)}{row.endDate ? ` → ${fmt(row.endDate)}` : ''} · {dayCount(row.date, row.endDate)} day{dayCount(row.date, row.endDate) === 1 ? '' : 's'}
                   </div>
                 </div>
 
                 {row.reason && (
-                  <div className="min-w-[180px] flex-1 text-[11px] text-[#3f4850] truncate" title={row.reason}>
+                  <div className="min-w-[180px] flex-1 text-[11px] text-[#3c3832] truncate" title={row.reason}>
                     “{row.reason}”
                   </div>
                 )}
 
                 {row.leaveType === 'annual' && row.leaveBalance && (
-                  <div className={`min-w-[150px] text-[11px] font-semibold ${row.leaveBalance.remaining < dayCount(row.date, row.endDate) ? 'text-red-600' : 'text-[#3f4850]'}`}>
+                  <div className={`min-w-[150px] text-[11px] font-semibold ${row.leaveBalance.remaining < dayCount(row.date, row.endDate) ? 'text-red-600' : 'text-[#3c3832]'}`}>
                     Balance: {row.leaveBalance.remaining}/{row.leaveBalance.entitlement} d
                     {row.leaveBalance.remaining < dayCount(row.date, row.endDate) && (
                       <div className="text-[10px] font-bold">⚠ exceeds remaining</div>

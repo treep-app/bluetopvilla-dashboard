@@ -42,14 +42,14 @@ export const SetupScreen: React.FC<{ onAlreadyDone: () => void }> = ({ onAlready
     setForm({ ...form, [key]: event.target.value });
 
   return (
-    <div className="min-h-screen bg-[#faf8ff] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-[#bfc7d2]/40 overflow-hidden">
-        <div className="p-8 bg-[#262f4c] text-[#eff0ff] text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-[#007bb9] flex items-center justify-center mx-auto">
+    <div className="min-h-screen bg-[#f4efe6] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-[#cfc4b4]/40 overflow-hidden">
+        <div className="p-8 bg-[#1b2c38] text-[#f4efe6] text-center space-y-2">
+          <div className="w-12 h-12 rounded-xl bg-[#e8b03a] flex items-center justify-center mx-auto">
             <Icon name="admin_panel_settings" className="text-white text-[28px]" />
           </div>
           <h1 className="text-xl font-bold tracking-tight">Create the first administrator</h1>
-          <p className="text-xs text-[#bfc7d2]">
+          <p className="text-xs text-[#cfc4b4]">
             No staff accounts exist yet. This account becomes the Super Administrator and can add everyone else.
           </p>
         </div>
@@ -73,11 +73,11 @@ export const SetupScreen: React.FC<{ onAlreadyDone: () => void }> = ({ onAlready
           <Field label="Confirm password">
             <input required type="password" autoComplete="new-password" className={inputClass} value={form.confirm} onChange={set('confirm')} />
           </Field>
-          <p className="text-[11px] text-[#707881]">At least 10 characters, including a letter and a number.</p>
+          <p className="text-[11px] text-[#786f62]">At least 10 characters, including a letter and a number.</p>
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 rounded-lg bg-[#006194] hover:bg-[#007bb9] disabled:opacity-60 text-white font-bold text-xs flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 rounded-lg bg-[#d99d26] hover:bg-[#e8b03a] disabled:opacity-60 text-white font-bold text-xs flex items-center justify-center gap-1.5"
           >
             <Icon name={submitting ? 'progress_activity' : 'person_add'} className={`text-[18px] ${submitting ? 'animate-spin' : ''}`} />
             {submitting ? 'Creating account…' : 'Create administrator & sign in'}

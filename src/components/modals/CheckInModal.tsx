@@ -74,12 +74,12 @@ export const CheckInModal: React.FC<CheckInModalProps> = ({ bookingId, onClose }
 
       {detail ? (
         <>
-          <div className="p-3.5 rounded-xl bg-[#f2f3ff] border border-[#bfc7d2]/30 space-y-1">
-            <div className="font-bold text-[#111a36] flex justify-between">
+          <div className="p-3.5 rounded-xl bg-[#e7ddd0] border border-[#cfc4b4]/30 space-y-1">
+            <div className="font-bold text-[#161410] flex justify-between">
               <span>{detail.guest.name}</span>
-              <span className="text-[#006194]">{detail.reference}</span>
+              <span className="text-[#d99d26]">{detail.reference}</span>
             </div>
-            <div className="text-[#707881]">
+            <div className="text-[#786f62]">
               {formatDay(detail.checkIn)} → {formatDay(detail.checkOut)} · {detail.nights} night(s) · {detail.adults + detail.children} guest(s)
             </div>
             {Number(detail.balance) > 0 ? (

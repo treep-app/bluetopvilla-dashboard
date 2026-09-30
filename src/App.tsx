@@ -16,6 +16,12 @@ import { EmployeesSection } from './views/EmployeeDetailPage';
 import { LeaveRequestsView } from './views/LeaveRequestsView';
 import { EnquiriesView } from './views/EnquiriesView';
 import { EventsContentView } from './views/EventsContentView';
+import { GoldenTicketsView } from './views/GoldenTicketsView';
+import { ContactsView } from './views/ContactsView';
+import { NewsletterSubscribersView } from './views/NewsletterSubscribersView';
+import { SmsTemplatesView } from './views/SmsTemplatesView';
+import { SmsCampaignsView } from './views/SmsCampaignsView';
+import { SmsDeliveriesView } from './views/SmsDeliveriesView';
 
 // Modals
 import { NewReservationModal } from './components/modals/NewReservationModal';
@@ -34,6 +40,12 @@ const MainLayout: React.FC = () => {
     hasPermission('canViewOperations') ||
     selectedScreen === 'enquiries' ||
     selectedScreen === 'events-content' ||
+    selectedScreen === 'golden-tickets' ||
+    selectedScreen === 'contacts' ||
+    selectedScreen === 'newsletter-subscribers' ||
+    selectedScreen === 'sms-templates' ||
+    selectedScreen === 'sms-campaigns' ||
+    selectedScreen === 'sms-deliveries' ||
     (selectedScreen === 'leave' && hasPermission('canViewStaff'))
       ? selectedScreen
       : 'enquiries';
@@ -48,9 +60,9 @@ const MainLayout: React.FC = () => {
 
   if (!authReady) {
     return (
-      <div className="min-h-screen bg-[#faf8ff] flex items-center justify-center">
-        <div className="flex items-center gap-2 text-xs font-semibold text-[#707881]">
-          <Icon name="progress_activity" className="text-[22px] animate-spin text-[#006194]" />
+      <div className="min-h-screen bg-[#f4efe6] flex items-center justify-center">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[#786f62]">
+          <Icon name="progress_activity" className="text-[22px] animate-spin text-[#d99d26]" />
           <span>Restoring secure session…</span>
         </div>
       </div>
@@ -68,7 +80,7 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8ff] text-[#111a36] flex">
+    <div className="min-h-screen bg-[#f4efe6] text-[#161410] flex">
       <Sidebar currentScreen={screen} onNavigate={setScreen} onOpenNewReservation={actions.onOpenNewReservation} />
 
       <div className="pl-64 flex-1 flex flex-col min-w-0">
@@ -80,7 +92,7 @@ const MainLayout: React.FC = () => {
           onOpenSearch={() => setIsSearchOpen(true)}
         />
 
-        <main className="w-full pt-16 bg-[#faf8ff] min-h-screen">
+        <main className="w-full pt-16 bg-[#f4efe6] min-h-screen">
           {screen === 'dashboard' && <DashboardView {...actions} onNavigate={setScreen} />}
           {screen === 'reservations' && <ReservationsView key="all" mode="all" {...actions} />}
           {screen === 'arrivals' && <ReservationsView key="arrivals" mode="arrivals" {...actions} />}
@@ -91,6 +103,12 @@ const MainLayout: React.FC = () => {
           {screen === 'rates' && <RoomTypesView />}
           {screen === 'enquiries' && <EnquiriesView />}
           {screen === 'events-content' && <EventsContentView />}
+          {screen === 'contacts' && <ContactsView />}
+          {screen === 'newsletter-subscribers' && <NewsletterSubscribersView />}
+          {screen === 'sms-templates' && <SmsTemplatesView />}
+          {screen === 'sms-campaigns' && <SmsCampaignsView />}
+          {screen === 'sms-deliveries' && <SmsDeliveriesView />}
+          {screen === 'golden-tickets' && <GoldenTicketsView />}
           {screen === 'staff' && <StaffView />}
           {screen === 'employees' && <EmployeesSection />}
           {screen === 'leave' && <LeaveRequestsView />}

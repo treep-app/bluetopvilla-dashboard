@@ -29,13 +29,13 @@ export const ImageField: React.FC<{ value: string | null; onChange: (url: string
 
   return (
     <div className="space-y-2">
-      <span className="font-semibold text-[#111a36] block">{label}</span>
+      <span className="font-semibold text-[#161410] block">{label}</span>
       <div className="flex items-center gap-3">
-        <div className="relative w-36 aspect-[4/3] rounded-lg overflow-hidden bg-[#f2f3ff] border border-[#bfc7d2]/40 shrink-0">
+        <div className="relative w-36 aspect-[4/3] rounded-lg overflow-hidden bg-[#e7ddd0] border border-[#cfc4b4]/40 shrink-0">
           {value ? (
             <img src={mediaSrc(value)} alt="" className="absolute inset-0 w-full h-full object-cover" />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-[#707881]">
+            <div className="absolute inset-0 flex items-center justify-center text-[#786f62]">
               <Icon name="image" className="text-2xl" />
             </div>
           )}

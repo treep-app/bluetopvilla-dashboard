@@ -163,7 +163,7 @@ const OnboardEmployeeModal: React.FC<{
           <textarea className={inputClass} rows={2} value={form.notes} onChange={set('notes')} placeholder="Referral, contract type…" />
         </Field>
 
-        <p className="text-[11px] text-[#707881]">
+        <p className="text-[11px] text-[#786f62]">
           An employee code (EMP-0001, EMP-0002…) is assigned automatically. Share the password privately — no email is sent.
         </p>
 
@@ -268,7 +268,7 @@ const EditEmployeeModal: React.FC<{
           <textarea className={inputClass} rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} />
         </Field>
 
-        <label className="flex items-center gap-2 text-xs font-semibold text-[#111a36]">
+        <label className="flex items-center gap-2 text-xs font-semibold text-[#161410]">
           <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} />
           Currently employed
         </label>
@@ -297,7 +297,7 @@ const DeactivateModal: React.FC<{ employee: Employee; onClose: () => void }> = (
     <Modal title="Deactivate employee" icon="person_off" onClose={onClose} width="max-w-md">
       <form onSubmit={submit} className="space-y-4">
         <ErrorNote message={deactivate.error} />
-        <p className="text-xs text-[#3f4850]">
+        <p className="text-xs text-[#3c3832]">
           Deactivate <strong>{name}</strong> ({employee.employeeCode})? Their dashboard login stops being listed as
           active staff. The account is kept for booking history and audit — nothing is deleted.
         </p>
@@ -359,7 +359,7 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
               Onboard employee
             </button>
           ) : (
-            <span className="px-3 py-1.5 rounded-lg bg-[#f2f3ff] text-[#707881] text-xs font-medium flex items-center gap-1">
+            <span className="px-3 py-1.5 rounded-lg bg-[#e7ddd0] text-[#786f62] text-xs font-medium flex items-center gap-1">
               <Icon name="lock" className="text-[16px]" />
               Administrators manage employees
             </span>
@@ -385,12 +385,12 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
         ].map((stat) => (
           <Card key={stat.label} className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#e3e7ff] text-[#006194] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-[#cfc4b4] text-[#d99d26] flex items-center justify-center">
                 <Icon name={stat.icon} />
               </div>
               <div>
-                <div className="text-lg font-bold text-[#111a36] leading-none">{stat.value}</div>
-                <div className="text-[11px] text-[#707881] mt-1">{stat.label}</div>
+                <div className="text-lg font-bold text-[#161410] leading-none">{stat.value}</div>
+                <div className="text-[11px] text-[#786f62] mt-1">{stat.label}</div>
               </div>
             </div>
           </Card>
@@ -402,7 +402,7 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
       {/* Filters */}
       <Card className="p-4 flex flex-wrap items-center gap-3">
         <div className="flex-1 min-w-[220px] relative">
-          <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#707881] text-[18px]" />
+          <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-[#786f62] text-[18px]" />
           <input
             className={`${inputClass} pl-9`}
             placeholder="Search name, code, email, position…"
@@ -428,7 +428,7 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#f2f3ff] text-[#707881] uppercase text-[10px] font-bold">
+              <thead className="bg-[#e7ddd0] text-[#786f62] uppercase text-[10px] font-bold">
                 <tr>
                   <th className="p-3">Employee</th>
                   <th className="p-3">Code</th>
@@ -441,7 +441,7 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
                   {(canManage || onOpen) && <th className="p-3 text-right">Actions</th>}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ebedff]">
+              <tbody className="divide-y divide-[#e7ddd0]">
                 {filtered.map((employee) => {
                   const name = [employee.firstName, employee.lastName].filter(Boolean).join(' ') || employee.email;
                   return (
@@ -455,32 +455,32 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
                             {onOpen ? (
                               <button
                                 onClick={() => onOpen(employee.id)}
-                                className="font-bold text-[#111a36] hover:text-[#006194] hover:underline text-left"
+                                className="font-bold text-[#161410] hover:text-[#d99d26] hover:underline text-left"
                                 title="Open employee profile"
                               >
                                 {name}
                               </button>
                             ) : (
-                              <div className="font-bold text-[#111a36]">{name}</div>
+                              <div className="font-bold text-[#161410]">{name}</div>
                             )}
-                            <div className="text-[11px] text-[#707881] truncate">{employee.email}</div>
+                            <div className="text-[11px] text-[#786f62] truncate">{employee.email}</div>
                           </div>
                         </div>
                       </td>
-                      <td className="p-3 font-mono text-[#006194] font-semibold">{employee.employeeCode}</td>
-                      <td className="p-3 text-[#111a36]">{employee.position}</td>
-                      <td className="p-3 text-[#3f4850]">{employee.department}</td>
-                      <td className="p-3 text-[#3f4850]">{employee.roles.map((role) => ROLE_TITLES[role]).join(', ')}</td>
-                      <td className="p-3 text-[#3f4850]">{new Date(employee.hireDate).toLocaleDateString('en-GB')}</td>
-                      <td className="p-3 text-right text-[#111a36] font-semibold">{money(employee.salary, currency)}</td>
+                      <td className="p-3 font-mono text-[#d99d26] font-semibold">{employee.employeeCode}</td>
+                      <td className="p-3 text-[#161410]">{employee.position}</td>
+                      <td className="p-3 text-[#3c3832]">{employee.department}</td>
+                      <td className="p-3 text-[#3c3832]">{employee.roles.map((role) => ROLE_TITLES[role]).join(', ')}</td>
+                      <td className="p-3 text-[#3c3832]">{new Date(employee.hireDate).toLocaleDateString('en-GB')}</td>
+                      <td className="p-3 text-right text-[#161410] font-semibold">{money(employee.salary, currency)}</td>
                       <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${employee.active ? 'bg-emerald-100 text-emerald-800' : 'bg-[#e3e7ff] text-[#707881]'}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${employee.active ? 'bg-emerald-100 text-emerald-800' : 'bg-[#cfc4b4] text-[#786f62]'}`}>
                           {employee.active ? 'Active' : 'Inactive'}
                         </span>
                       </td>
                       {canManage && (
                         <td className="p-3 text-right whitespace-nowrap">
-                          <button onClick={() => setEditing(employee)} className="p-1.5 rounded-lg hover:bg-[#f2f3ff] text-[#006194]" title="Edit">
+                          <button onClick={() => setEditing(employee)} className="p-1.5 rounded-lg hover:bg-[#e7ddd0] text-[#d99d26]" title="Edit">
                             <Icon name="edit" className="text-[16px]" />
                           </button>
                           {employee.active && (
@@ -492,7 +492,7 @@ export const EmployeesView: React.FC<{ onOpen?: (id: string) => void }> = ({ onO
                       )}
                       {!canManage && onOpen && (
                         <td className="p-3 text-right">
-                          <button onClick={() => onOpen(employee.id)} className="text-[#006194] font-bold text-[11px] hover:underline">
+                          <button onClick={() => onOpen(employee.id)} className="text-[#d99d26] font-bold text-[11px] hover:underline">
                             View
                           </button>
                         </td>

@@ -24,10 +24,10 @@ const RANGES = [
 ] as const;
 
 const TILE_STYLE: Record<string, string> = {
-  occupied: 'bg-[#006194] text-white',
-  clean: 'bg-[#f2f3ff] text-[#111a36] border border-[#bfc7d2]/30',
+  occupied: 'bg-[#d99d26] text-white',
+  clean: 'bg-[#e7ddd0] text-[#161410] border border-[#cfc4b4]/30',
   cleaning: 'bg-[#ffdcc3] text-[#2f1500] border border-[#8d4b00]/30',
-  dirty: 'bg-[#ebedff] text-[#8d4b00] border border-[#bfc7d2]/30',
+  dirty: 'bg-[#e7ddd0] text-[#8d4b00] border border-[#cfc4b4]/30',
   oos: 'bg-[#ffdad6] text-[#ba1a1a] border border-[#ba1a1a]/30',
 };
 
@@ -66,8 +66,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   );
   const donut = o
     ? [
-        { name: 'Occupied', value: o.rooms.occupied, color: '#006194' },
-        { name: 'Clean', value: o.rooms.clean, color: '#565d79' },
+        { name: 'Occupied', value: o.rooms.occupied, color: '#d99d26' },
+        { name: 'Clean', value: o.rooms.clean, color: '#2a3540' },
         { name: 'Dirty / cleaning', value: o.rooms.dirty + o.rooms.cleaning, color: '#8d4b00' },
         { name: 'Out of service', value: o.rooms.outOfService, color: '#ba1a1a' },
       ]
@@ -97,7 +97,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <button
           disabled={checkOut.pending}
           onClick={() => void checkOut.run(booking.id)}
-          className="px-3 py-1.5 rounded-lg bg-[#565d79] hover:bg-[#262f4c] text-white text-xs font-semibold flex items-center gap-1 disabled:opacity-50"
+          className="px-3 py-1.5 rounded-lg bg-[#2a3540] hover:bg-[#1b2c38] text-white text-xs font-semibold flex items-center gap-1 disabled:opacity-50"
         >
           <Icon name="logout" className="text-[16px]" />
           Check out
@@ -109,17 +109,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   return (
     <div className="flex flex-col w-full pb-16">
-      <div className="px-8 py-3.5 bg-white border-b border-[#bfc7d2]/30 flex flex-col xl:flex-row xl:items-center justify-between gap-3">
+      <div className="px-8 py-3.5 bg-white border-b border-[#cfc4b4]/30 flex flex-col xl:flex-row xl:items-center justify-between gap-3">
         <div>
-          <div className="font-bold text-xl text-[#111a36] tracking-tight">
+          <div className="font-bold text-xl text-[#161410] tracking-tight">
             Welcome, {currentUser?.name.split(' ')[0]}
           </div>
-          <p className="text-xs text-[#3f4850]">
+          <p className="text-xs text-[#3c3832]">
             {o ? formatDay(o.today) : '…'} · {property?.name}
             {o ? (
               <>
                 {' '}
-                · <span className="font-bold text-[#006194]">{o.rooms.clean} of {o.rooms.total} rooms</span> clean and
+                · <span className="font-bold text-[#d99d26]">{o.rooms.clean} of {o.rooms.total} rooms</span> clean and
                 vacant
               </>
             ) : null}
@@ -198,20 +198,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <Card className="lg:col-span-7 p-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 gap-2">
               <div>
-                <h2 className="text-base font-bold text-[#111a36]">Payments collected</h2>
-                <p className="text-xs text-[#707881]">By payment channel, per day</p>
+                <h2 className="text-base font-bold text-[#161410]">Payments collected</h2>
+                <p className="text-xs text-[#786f62]">By payment channel, per day</p>
               </div>
               <Tabs value={range} options={[...RANGES]} onChange={setRange} />
             </div>
-            <div className="grid grid-cols-4 gap-2 py-2.5 my-2 bg-[#f2f3ff] rounded-lg px-4 border border-[#bfc7d2]/20">
+            <div className="grid grid-cols-4 gap-2 py-2.5 my-2 bg-[#e7ddd0] rounded-lg px-4 border border-[#cfc4b4]/20">
               {[
-                ['Total', revenueTotal.total, 'text-[#111a36]'],
-                ['Card (online)', revenueTotal.online, 'text-[#006194]'],
-                ['Mobile money', revenueTotal.mobileMoney, 'text-[#565d79]'],
+                ['Total', revenueTotal.total, 'text-[#161410]'],
+                ['Card (online)', revenueTotal.online, 'text-[#d99d26]'],
+                ['Mobile money', revenueTotal.mobileMoney, 'text-[#2a3540]'],
                 ['At the desk', revenueTotal.desk, 'text-[#8d4b00]'],
               ].map(([label, value, color]) => (
                 <div key={label as string}>
-                  <div className="text-[11px] text-[#707881]">{label}</div>
+                  <div className="text-[11px] text-[#786f62]">{label}</div>
                   <div className={`text-sm font-bold tabular-nums ${color}`}>{money(value as number)}</div>
                 </div>
               ))}
@@ -226,17 +226,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     <XAxis
                       dataKey="date"
                       tickFormatter={(value: string) => value.slice(5)}
-                      tick={{ fontSize: 11, fill: '#707881' }}
-                      stroke="#bfc7d2"
+                      tick={{ fontSize: 11, fill: '#786f62' }}
+                      stroke="#cfc4b4"
                     />
-                    <YAxis tick={{ fontSize: 10, fill: '#707881' }} stroke="#bfc7d2" />
+                    <YAxis tick={{ fontSize: 10, fill: '#786f62' }} stroke="#cfc4b4" />
                     <Tooltip
                       formatter={(value) => money(Number(value))}
                       labelFormatter={(label) => formatDay(String(label))}
-                      contentStyle={{ borderRadius: 8, fontSize: 12, border: '1px solid #bfc7d2' }}
+                      contentStyle={{ borderRadius: 8, fontSize: 12, border: '1px solid #cfc4b4' }}
                     />
-                    <Area type="monotone" stackId="1" dataKey="online" name="Card (online)" stroke="#006194" fill="#006194" fillOpacity={0.25} />
-                    <Area type="monotone" stackId="1" dataKey="mobileMoney" name="Mobile money" stroke="#565d79" fill="#565d79" fillOpacity={0.2} />
+                    <Area type="monotone" stackId="1" dataKey="online" name="Card (online)" stroke="#d99d26" fill="#d99d26" fillOpacity={0.25} />
+                    <Area type="monotone" stackId="1" dataKey="mobileMoney" name="Mobile money" stroke="#2a3540" fill="#2a3540" fillOpacity={0.2} />
                     <Area type="monotone" stackId="1" dataKey="desk" name="At the desk" stroke="#8d4b00" fill="#8d4b00" fillOpacity={0.2} />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -245,8 +245,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </Card>
 
           <Card className="lg:col-span-5 p-5">
-            <h2 className="text-base font-bold text-[#111a36]">Inventory status</h2>
-            <p className="text-xs text-[#707881]">Occupancy and readiness right now</p>
+            <h2 className="text-base font-bold text-[#161410]">Inventory status</h2>
+            <p className="text-xs text-[#786f62]">Occupancy and readiness right now</p>
             {o ? (
               <>
                 <div className="flex items-center gap-4 py-3">
@@ -261,14 +261,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       </PieChart>
                     </ResponsiveContainer>
                     <div className="absolute flex flex-col items-center pointer-events-none">
-                      <span className="text-lg font-bold text-[#111a36] tabular-nums">{o.rooms.total}</span>
-                      <span className="text-[9px] text-[#707881] uppercase font-bold">Rooms</span>
+                      <span className="text-lg font-bold text-[#161410] tabular-nums">{o.rooms.total}</span>
+                      <span className="text-[9px] text-[#786f62] uppercase font-bold">Rooms</span>
                     </div>
                   </div>
                   <div className="flex-1 space-y-2 text-xs">
                     {donut.map((entry) => (
                       <div key={entry.name} className="flex items-center justify-between">
-                        <span className="flex items-center gap-2 text-[#111a36] font-medium">
+                        <span className="flex items-center gap-2 text-[#161410] font-medium">
                           <span className="w-2.5 h-2.5 rounded-full" style={{ background: entry.color }} />
                           {entry.name}
                         </span>
@@ -277,19 +277,19 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     ))}
                   </div>
                 </div>
-                <div className="space-y-3 pt-3 border-t border-[#ebedff]">
+                <div className="space-y-3 pt-3 border-t border-[#e7ddd0]">
                   {o.roomTypes.map((type) => {
                     const percent = type.units ? Math.round((type.occupied / type.units) * 100) : 0;
                     return (
                       <div key={type.id}>
                         <div className="flex justify-between text-xs font-semibold mb-1">
-                          <span className="text-[#111a36]">{type.name}</span>
-                          <span className="text-[#006194] tabular-nums">
+                          <span className="text-[#161410]">{type.name}</span>
+                          <span className="text-[#d99d26] tabular-nums">
                             {type.occupied} / {type.units} occupied
                           </span>
                         </div>
-                        <div className="w-full bg-[#ebedff] rounded-full h-1.5 overflow-hidden">
-                          <div className="bg-[#006194] h-1.5 rounded-full" style={{ width: `${percent}%` }} />
+                        <div className="w-full bg-[#e7ddd0] rounded-full h-1.5 overflow-hidden">
+                          <div className="bg-[#d99d26] h-1.5 rounded-full" style={{ width: `${percent}%` }} />
                         </div>
                       </div>
                     );
@@ -304,7 +304,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <Card className="lg:col-span-7 overflow-hidden">
-            <div className="p-5 border-b border-[#ebedff] flex items-center justify-between gap-3">
+            <div className="p-5 border-b border-[#e7ddd0] flex items-center justify-between gap-3">
               <Tabs
                 value={feed}
                 onChange={setFeed}
@@ -313,12 +313,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   { value: 'departures', label: `Today's departures (${departures.data?.length ?? 0})` },
                 ]}
               />
-              <button onClick={() => onNavigate('arrivals')} className="text-xs text-[#006194] font-bold">
+              <button onClick={() => onNavigate('arrivals')} className="text-xs text-[#d99d26] font-bold">
                 View all
               </button>
             </div>
             <ErrorNote message={(feed === 'arrivals' ? arrivals : departures).error} />
-            <div className="divide-y divide-[#ebedff]">
+            <div className="divide-y divide-[#e7ddd0]">
               {feedList.length === 0 ? (
                 <Empty
                   icon={feed === 'arrivals' ? 'flight_land' : 'flight_takeoff'}
@@ -329,14 +329,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div key={booking.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <button onClick={() => onOpenFolio(booking.id)} className="font-bold text-sm text-[#111a36] hover:underline">
+                        <button onClick={() => onOpenFolio(booking.id)} className="font-bold text-sm text-[#161410] hover:underline">
                           {booking.guest.name}
                         </button>
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${STAGE_BADGE[booking.stage]}`}>
                           {STAGE_LABELS[booking.stage]}
                         </span>
                       </div>
-                      <div className="text-[11px] text-[#707881] mt-0.5">
+                      <div className="text-[11px] text-[#786f62] mt-0.5">
                         {booking.reference} · {booking.rooms.map((room) => room.roomName ?? room.roomTypeName).join(', ')} ·{' '}
                         {booking.nights} night(s) · {booking.guest.phone}
                       </div>
@@ -346,7 +346,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         ) : (
                           <span className="text-emerald-700 font-semibold">Paid {money(booking.paid)}</span>
                         )}
-                        {booking.specialRequests ? <span className="text-[#707881]"> · {booking.specialRequests}</span> : null}
+                        {booking.specialRequests ? <span className="text-[#786f62]"> · {booking.specialRequests}</span> : null}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
@@ -365,7 +365,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <Card className="p-5 space-y-3">
               <div className="flex items-center gap-2">
                 <Icon name="notifications_active" className="text-[#b15f00] text-[22px]" />
-                <h2 className="text-base font-bold text-[#111a36]">Needs attention</h2>
+                <h2 className="text-base font-bold text-[#161410]">Needs attention</h2>
               </div>
               {oosRooms.map((room) => (
                 <button
@@ -373,11 +373,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   onClick={() => onSelectRoom(room.id)}
                   className="w-full text-left p-3 rounded-xl bg-[#ffdad6]/40 border border-[#ba1a1a]/30"
                 >
-                  <div className="text-xs font-bold text-[#111a36] flex items-center gap-1.5">
+                  <div className="text-xs font-bold text-[#161410] flex items-center gap-1.5">
                     <Icon name="build_circle" className="text-[#ba1a1a] text-[18px]" />
                     {room.name} is out of service
                   </div>
-                  <p className="text-xs text-[#3f4850] mt-1">{room.maintenanceNote || 'No note recorded.'}</p>
+                  <p className="text-xs text-[#3c3832] mt-1">{room.maintenanceNote || 'No note recorded.'}</p>
                 </button>
               ))}
               {turnoverRooms.length > 0 && (
@@ -385,11 +385,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   onClick={() => onNavigate('housekeeping')}
                   className="w-full text-left p-3 rounded-xl bg-[#ffdcc3]/40 border border-[#8d4b00]/30"
                 >
-                  <div className="text-xs font-bold text-[#111a36] flex items-center gap-1.5">
+                  <div className="text-xs font-bold text-[#161410] flex items-center gap-1.5">
                     <Icon name="cleaning_services" className="text-[#8d4b00] text-[18px]" />
                     {turnoverRooms.length} room(s) awaiting turnover
                   </div>
-                  <p className="text-xs text-[#3f4850] mt-1">
+                  <p className="text-xs text-[#3c3832] mt-1">
                     {turnoverRooms
                       .map((room) => `${room.name}${room.housekeeper ? ` (${room.housekeeper})` : ''}`)
                       .join(', ')}
@@ -399,13 +399,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               {o && o.enquiries.total > 0 && (
                 <button
                   onClick={() => onNavigate('enquiries')}
-                  className="w-full text-left p-3 rounded-xl bg-[#f2f3ff] border border-[#bfc7d2]/30"
+                  className="w-full text-left p-3 rounded-xl bg-[#e7ddd0] border border-[#cfc4b4]/30"
                 >
-                  <div className="text-xs font-bold text-[#111a36] flex items-center gap-1.5">
-                    <Icon name="mail" className="text-[#006194] text-[18px]" />
+                  <div className="text-xs font-bold text-[#161410] flex items-center gap-1.5">
+                    <Icon name="mail" className="text-[#d99d26] text-[18px]" />
                     {o.enquiries.total} enquiry/message(s) waiting
                   </div>
-                  <p className="text-xs text-[#707881] mt-1">
+                  <p className="text-xs text-[#786f62] mt-1">
                     {o.enquiries.venue} venue · {o.enquiries.events} event · {o.enquiries.contact} unread message(s)
                   </p>
                 </button>
@@ -415,21 +415,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   onClick={() => onNavigate('reservations')}
                   className="w-full text-left p-3 rounded-xl bg-amber-50 border border-amber-300"
                 >
-                  <div className="text-xs font-bold text-[#111a36]">
+                  <div className="text-xs font-bold text-[#161410]">
                     {o.pendingPayment} online booking(s) awaiting payment
                   </div>
-                  <p className="text-xs text-[#707881] mt-1">Rooms are held until the payment window expires.</p>
+                  <p className="text-xs text-[#786f62] mt-1">Rooms are held until the payment window expires.</p>
                 </button>
               )}
               {o && !oosRooms.length && !turnoverRooms.length && !o.enquiries.total && !o.pendingPayment ? (
-                <p className="text-xs text-[#707881]">Nothing needs attention right now.</p>
+                <p className="text-xs text-[#786f62]">Nothing needs attention right now.</p>
               ) : null}
             </Card>
 
             <Card className="p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <h2 className="text-base font-bold text-[#111a36]">Room rack</h2>
-                <button onClick={() => onNavigate('rooms')} className="text-xs text-[#006194] font-bold">
+                <h2 className="text-base font-bold text-[#161410]">Room rack</h2>
+                <button onClick={() => onNavigate('rooms')} className="text-xs text-[#d99d26] font-bold">
                   Full matrix
                 </button>
               </div>

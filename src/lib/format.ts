@@ -43,12 +43,12 @@ export const STAGE_LABELS: Record<BookingStage, string> = {
 
 export const STAGE_BADGE: Record<BookingStage, string> = {
   pending_payment: 'bg-amber-100 text-amber-900',
-  upcoming: 'bg-[#f2f3ff] text-[#006194]',
-  arriving: 'bg-[#cce5ff] text-[#001d31]',
+  upcoming: 'bg-[#e7ddd0] text-[#d99d26]',
+  arriving: 'bg-[#e7ddd0] text-[#1b2c38]',
   in_house: 'bg-emerald-100 text-emerald-800',
-  departed: 'bg-[#ebedff] text-[#707881]',
+  departed: 'bg-[#e7ddd0] text-[#786f62]',
   cancelled: 'bg-[#ffdad6] text-[#93000a]',
-  expired: 'bg-[#ebedff] text-[#707881]',
+  expired: 'bg-[#e7ddd0] text-[#786f62]',
   no_show: 'bg-[#ffdad6] text-[#93000a]',
 };
 
@@ -61,7 +61,7 @@ export const ROOM_STATUS_LABELS: Record<RoomStatus, string> = {
 };
 
 export const ROOM_STATUS_BADGE: Record<RoomStatus, string> = {
-  occupied: 'bg-[#cce5ff] text-[#001d31]',
+  occupied: 'bg-[#e7ddd0] text-[#1b2c38]',
   clean: 'bg-emerald-100 text-emerald-800',
   cleaning: 'bg-[#ffdcc3] text-[#2f1500]',
   dirty: 'bg-amber-100 text-amber-900',

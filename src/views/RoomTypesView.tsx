@@ -31,7 +31,7 @@ const RateEditor: React.FC<{ type: RoomTypeDetail }> = ({ type }) => {
       <button type="submit" disabled={save.pending} className={buttonClass.small}>
         Save
       </button>
-      <button type="button" onClick={() => setEditing(false)} className="text-[#707881] text-[11px]">
+      <button type="button" onClick={() => setEditing(false)} className="text-[#786f62] text-[11px]">
         Cancel
       </button>
       {save.error ? <span className="text-[11px] text-[#ba1a1a]">{save.error}</span> : null}
@@ -61,8 +61,8 @@ export const RoomTypesView: React.FC = () => {
         }
       />
 
-      <div className="p-3.5 rounded-xl bg-[#cce5ff]/30 border border-[#006194]/20 text-xs text-[#3f4850] flex gap-2">
-        <Icon name="info" className="text-[18px] text-[#006194]" />
+      <div className="p-3.5 rounded-xl bg-[#e7ddd0]/30 border border-[#d99d26]/20 text-xs text-[#3c3832] flex gap-2">
+        <Icon name="info" className="text-[18px] text-[#d99d26]" />
         <span>
           A room type is what guests book (e.g. "Deluxe Room"); its rooms are the physical units the front desk assigns.
           Each room adds one room to sell per night. Rate changes apply to new bookings only.
@@ -84,11 +84,11 @@ export const RoomTypesView: React.FC = () => {
             return (
               <Card key={type.id} className="overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-[14rem_1fr]">
-                  <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[11rem] bg-[#f2f3ff]">
+                  <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[11rem] bg-[#e7ddd0]">
                     {cover ? (
                       <img src={mediaSrc(cover.url)} alt={cover.alt ?? type.name} className="absolute inset-0 w-full h-full object-cover" />
                     ) : (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-[#707881] gap-1">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-[#786f62] gap-1">
                         <Icon name="image" className="text-3xl" />
                         <span className="text-[11px]">No photo</span>
                       </div>
@@ -103,42 +103,42 @@ export const RoomTypesView: React.FC = () => {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h2 className="text-base font-bold text-[#111a36]">{type.name}</h2>
+                          <h2 className="text-base font-bold text-[#161410]">{type.name}</h2>
                           {type.isActive ? (
                             <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">On website</span>
                           ) : (
-                            <span className="px-2 py-0.5 rounded-full bg-[#ebedff] text-[#707881] text-[10px] font-bold">Hidden</span>
+                            <span className="px-2 py-0.5 rounded-full bg-[#e7ddd0] text-[#786f62] text-[10px] font-bold">Hidden</span>
                           )}
                         </div>
-                        <div className="text-[#707881] mt-0.5">
+                        <div className="text-[#786f62] mt-0.5">
                           /rooms/{type.slug} · sleeps {type.occupancy}
                           {type.bedConfig ? ` · ${type.bedConfig}` : ''}
                           {type.sizeSqm ? ` · ${type.sizeSqm} m²` : ''}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-[#111a36] tabular-nums">{formatMoney(type.basePrice, type.currency)}</div>
-                        <div className="text-[11px] text-[#707881] mb-1">per night</div>
+                        <div className="text-lg font-bold text-[#161410] tabular-nums">{formatMoney(type.basePrice, type.currency)}</div>
+                        <div className="text-[11px] text-[#786f62] mb-1">per night</div>
                         {canManageRates && !canManageRooms ? <RateEditor key={type.basePrice} type={type} /> : null}
                       </div>
                     </div>
 
-                    {type.description ? <p className="text-[#3f4850] line-clamp-2">{type.description}</p> : null}
+                    {type.description ? <p className="text-[#3c3832] line-clamp-2">{type.description}</p> : null}
 
                     <div className="flex flex-wrap gap-1.5">
                       {type.amenities.map((amenity) => (
-                        <span key={amenity.id} className="px-2 py-0.5 rounded bg-[#f2f3ff] text-[#3f4850] flex items-center gap-1">
-                          <Icon name={amenitySymbol(amenity.icon)} className="text-[13px] text-[#006194]" />
+                        <span key={amenity.id} className="px-2 py-0.5 rounded bg-[#e7ddd0] text-[#3c3832] flex items-center gap-1">
+                          <Icon name={amenitySymbol(amenity.icon)} className="text-[13px] text-[#d99d26]" />
                           {amenity.name}
                         </span>
                       ))}
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#ebedff]">
-                      <div className="text-[#3f4850]">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#e7ddd0]">
+                      <div className="text-[#3c3832]">
                         <strong>{type.sellableUnits}</strong> of {type.units} room(s) sellable
                         {type.units ? `: ${type.rooms.filter((room) => room.isActive).map((room) => room.name).join(', ')}` : ''}
-                        {type.upcomingBookings ? <span className="text-[#707881]"> · {type.upcomingBookings} upcoming booking(s)</span> : null}
+                        {type.upcomingBookings ? <span className="text-[#786f62]"> · {type.upcomingBookings} upcoming booking(s)</span> : null}
                         {type.isActive && type.units === 0 ? (
                           <span className="block text-amber-800">Shown on the website but has no rooms — guests can't book it yet.</span>
                         ) : null}
@@ -162,7 +162,7 @@ export const RoomTypesView: React.FC = () => {
       )}
 
       {!canManageRooms && !canManageRates ? (
-        <p className="text-[11px] text-[#707881]">Administrators manage room types; managers can change rates.</p>
+        <p className="text-[11px] text-[#786f62]">Administrators manage room types; managers can change rates.</p>
       ) : null}
       {editing !== undefined ? <RoomTypeEditor key={editing?.id ?? 'new'} roomType={editing} onClose={() => setEditing(undefined)} /> : null}
     </div>

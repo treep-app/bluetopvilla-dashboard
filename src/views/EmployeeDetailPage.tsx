@@ -9,11 +9,11 @@ import { EmployeesView } from './EmployeesView';
 
 const STATUS_COLORS: Record<string, string> = {
   CONFIRMED: 'bg-emerald-100 text-emerald-800',
-  COMPLETED: 'bg-[#e3e7ff] text-[#3f4850]',
+  COMPLETED: 'bg-[#cfc4b4] text-[#3c3832]',
   PENDING_PAYMENT: 'bg-amber-100 text-amber-800',
   PAYMENT_PROCESSING: 'bg-amber-100 text-amber-800',
   CANCELLED: 'bg-red-100 text-red-700',
-  EXPIRED: 'bg-[#f2f3ff] text-[#707881]',
+  EXPIRED: 'bg-[#e7ddd0] text-[#786f62]',
   NO_SHOW: 'bg-red-100 text-red-700',
 };
 
@@ -37,8 +37,8 @@ const KIND_COLORS: Record<string, string> = {
   PRESENT: 'bg-emerald-100 text-emerald-800',
   LATE: 'bg-amber-100 text-amber-800',
   ABSENT: 'bg-red-100 text-red-700',
-  LEAVE: 'bg-[#e3e7ff] text-[#006194]',
-  HOLIDAY: 'bg-[#f2f3ff] text-[#707881]',
+  LEAVE: 'bg-[#cfc4b4] text-[#d99d26]',
+  HOLIDAY: 'bg-[#e7ddd0] text-[#786f62]',
 };
 
 const fmtTime = (iso: string | null) =>
@@ -113,8 +113,8 @@ const AttendanceTab: React.FC<{ employeeId: string; canManage: boolean }> = ({ e
     <div className="space-y-4">
       {canManage && (
         <Card className="p-4 flex flex-wrap items-center gap-3">
-          <div className="flex-1 min-w-[200px] text-xs text-[#707881]">
-            Today: <strong className="text-[#111a36]">
+          <div className="flex-1 min-w-[200px] text-xs text-[#786f62]">
+            Today: <strong className="text-[#161410]">
               {todayRow ? todayRow.kind : 'not marked'}
             </strong>
             {todayRow?.checkIn && <span> · in {fmtTime(todayRow.checkIn)}</span>}
@@ -150,7 +150,7 @@ const AttendanceTab: React.FC<{ employeeId: string; canManage: boolean }> = ({ e
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#f2f3ff] text-[#707881] uppercase text-[10px] font-bold">
+              <thead className="bg-[#e7ddd0] text-[#786f62] uppercase text-[10px] font-bold">
                 <tr>
                   <th className="p-3">Date</th>
                   <th className="p-3">Status</th>
@@ -159,23 +159,23 @@ const AttendanceTab: React.FC<{ employeeId: string; canManage: boolean }> = ({ e
                   <th className="p-3">Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ebedff]">
+              <tbody className="divide-y divide-[#e7ddd0]">
                 {attendance.data.map((row) => (
                   <tr key={row.id}>
-                    <td className="p-3 font-semibold text-[#111a36]">
+                    <td className="p-3 font-semibold text-[#161410]">
                       {new Date(row.date).toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' })}
                     </td>
                     <td className="p-3">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${KIND_COLORS[row.kind] ?? 'bg-[#f2f3ff] text-[#707881]'}`}>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${KIND_COLORS[row.kind] ?? 'bg-[#e7ddd0] text-[#786f62]'}`}>
                         {row.kind}
                       </span>
                       {row.kind === 'LEAVE' && row.leaveStatus && (
-                        <span className="ml-1.5 text-[10px] font-bold text-[#707881]">{row.leaveStatus.toLowerCase()}</span>
+                        <span className="ml-1.5 text-[10px] font-bold text-[#786f62]">{row.leaveStatus.toLowerCase()}</span>
                       )}
                     </td>
-                    <td className="p-3 text-[#3f4850]">{fmtTime(row.checkIn)}</td>
-                    <td className="p-3 text-[#3f4850]">{fmtTime(row.checkOut)}</td>
-                    <td className="p-3 text-[#707881]">
+                    <td className="p-3 text-[#3c3832]">{fmtTime(row.checkIn)}</td>
+                    <td className="p-3 text-[#3c3832]">{fmtTime(row.checkOut)}</td>
+                    <td className="p-3 text-[#786f62]">
                       {row.leaveType ? `${row.leaveType} leave` : ''}
                       {row.endDate && ` → ${new Date(row.endDate).toLocaleDateString('en-GB')}`}
                       {row.reason ? ` — ${row.reason}` : ''}
@@ -286,7 +286,7 @@ const Detail: React.FC<{
 
   return (
     <div className="p-8 space-y-6 max-w-7xl mx-auto pb-16">
-      <button onClick={onBack} className="text-xs font-semibold text-[#006194] flex items-center gap-1 hover:underline">
+      <button onClick={onBack} className="text-xs font-semibold text-[#d99d26] flex items-center gap-1 hover:underline">
         <Icon name="arrow_back" className="text-[16px]" />
         All employees
       </button>
@@ -295,7 +295,7 @@ const Detail: React.FC<{
         title={name}
         subtitle={`${data.employeeCode} · ${data.position} · ${data.department}`}
         actions={
-          <span className={`px-3 py-1.5 rounded-lg text-xs font-bold ${data.active ? 'bg-emerald-100 text-emerald-800' : 'bg-[#e3e7ff] text-[#707881]'}`}>
+          <span className={`px-3 py-1.5 rounded-lg text-xs font-bold ${data.active ? 'bg-emerald-100 text-emerald-800' : 'bg-[#cfc4b4] text-[#786f62]'}`}>
             {data.active ? 'Active' : 'Inactive'}
           </span>
         }
@@ -309,9 +309,9 @@ const Detail: React.FC<{
               {name.substring(0, 2).toUpperCase()}
             </div>
             <div className="min-w-0">
-              <div className="font-bold text-[#111a36]">{name}</div>
-              <div className="text-xs text-[#707881] truncate">{data.email}</div>
-              {data.phone && <div className="text-xs text-[#707881]">{data.phone}</div>}
+              <div className="font-bold text-[#161410]">{name}</div>
+              <div className="text-xs text-[#786f62] truncate">{data.email}</div>
+              {data.phone && <div className="text-xs text-[#786f62]">{data.phone}</div>}
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
@@ -321,41 +321,41 @@ const Detail: React.FC<{
               { label: 'Tenure', value: tenureMonths >= 12 ? `${Math.floor(tenureMonths / 12)}y ${tenureMonths % 12}m` : `${tenureMonths}m` },
               { label: 'Monthly salary', value: data.salary === null ? '—' : fmtMoney(data.salary, currency) },
             ].map((item) => (
-              <div key={item.label} className="p-2.5 rounded-lg bg-[#f2f3ff]">
-                <div className="text-[10px] uppercase tracking-wide text-[#707881] font-bold">{item.label}</div>
-                <div className="font-semibold text-[#111a36] mt-0.5">{item.value}</div>
+              <div key={item.label} className="p-2.5 rounded-lg bg-[#e7ddd0]">
+                <div className="text-[10px] uppercase tracking-wide text-[#786f62] font-bold">{item.label}</div>
+                <div className="font-semibold text-[#161410] mt-0.5">{item.value}</div>
               </div>
             ))}
           </div>
           {data.notes && (
-            <div className="text-xs text-[#3f4850] p-3 rounded-lg border border-[#ebedff] bg-white">
-              <span className="font-bold text-[#707881]">Notes: </span>
+            <div className="text-xs text-[#3c3832] p-3 rounded-lg border border-[#e7ddd0] bg-white">
+              <span className="font-bold text-[#786f62]">Notes: </span>
               {data.notes}
             </div>
           )}
         </Card>
 
         <Card className="p-5 space-y-3">
-          <div className="text-[10px] uppercase tracking-wide text-[#707881] font-bold">
+          <div className="text-[10px] uppercase tracking-wide text-[#786f62] font-bold">
             Annual leave {data.leaveBalance.year}
           </div>
           <div className="flex items-baseline gap-1.5">
-            <span className="text-3xl font-bold text-[#111a36]">{data.leaveBalance.remaining}</span>
-            <span className="text-xs text-[#707881]">of {data.leaveBalance.entitlement} days left</span>
+            <span className="text-3xl font-bold text-[#161410]">{data.leaveBalance.remaining}</span>
+            <span className="text-xs text-[#786f62]">of {data.leaveBalance.entitlement} days left</span>
           </div>
-          <div className="h-2 rounded-full bg-[#e3e7ff] overflow-hidden">
+          <div className="h-2 rounded-full bg-[#cfc4b4] overflow-hidden">
             <div
-              className={`h-full rounded-full ${data.leaveBalance.remaining <= 3 ? 'bg-amber-500' : 'bg-[#006194]'}`}
+              className={`h-full rounded-full ${data.leaveBalance.remaining <= 3 ? 'bg-amber-500' : 'bg-[#d99d26]'}`}
               style={{ width: `${Math.min(100, (data.leaveBalance.used / Math.max(1, data.leaveBalance.entitlement)) * 100)}%` }}
             />
           </div>
-          <div className="text-[11px] text-[#707881] flex justify-between">
+          <div className="text-[11px] text-[#786f62] flex justify-between">
             <span>{data.leaveBalance.used} used</span>
             {data.leaveBalance.pending > 0 && <span className="text-amber-700 font-semibold">{data.leaveBalance.pending} pending</span>}
           </div>
-          <div className="pt-2 border-t border-[#ebedff] flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-[#111a36]">{data.stats.bookingsCreated}</span>
-            <span className="text-xs text-[#707881]">desk bookings created</span>
+          <div className="pt-2 border-t border-[#e7ddd0] flex items-baseline gap-2">
+            <span className="text-2xl font-bold text-[#161410]">{data.stats.bookingsCreated}</span>
+            <span className="text-xs text-[#786f62]">desk bookings created</span>
           </div>
         </Card>
       </div>
@@ -373,7 +373,7 @@ const Detail: React.FC<{
             key={key}
             onClick={() => setTab(key)}
             className={`px-4 py-2 rounded-lg text-xs font-bold transition-colors ${
-              tab === key ? 'bg-[#006194] text-white' : 'bg-white border border-[#bfc7d2]/50 text-[#3f4850] hover:border-[#006194]'
+              tab === key ? 'bg-[#d99d26] text-white' : 'bg-white border border-[#cfc4b4]/50 text-[#3c3832] hover:border-[#d99d26]'
             }`}
           >
             {label}
@@ -386,14 +386,14 @@ const Detail: React.FC<{
           {!data.audit.length ? (
             <Empty icon="history" title="No audit entries yet" />
           ) : (
-            <ul className="divide-y divide-[#ebedff]">
+            <ul className="divide-y divide-[#e7ddd0]">
               {data.audit.map((entry) => (
                 <li key={entry.id} className="p-4 flex items-start gap-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${entry.by === 'self' ? 'bg-[#e3e7ff] text-[#006194]' : 'bg-[#f2f3ff] text-[#707881]'}`}>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${entry.by === 'self' ? 'bg-[#cfc4b4] text-[#d99d26]' : 'bg-[#e7ddd0] text-[#786f62]'}`}>
                     <Icon name={entry.by === 'self' ? 'person' : 'admin_panel_settings'} className="text-[16px]" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-xs text-[#111a36]">
+                    <div className="text-xs text-[#161410]">
                       <span className="font-bold">{entry.actor}</span>{' '}
                       {entry.by === 'self' ? (
                         <span>acted as {entry.actor === 'Self' ? 'themselves' : 'self'} — {actionLabel(entry.action)} {entry.entity.toLowerCase()}</span>
@@ -402,7 +402,7 @@ const Detail: React.FC<{
                       )}
                     </div>
                     {entry.metadata && Object.keys(entry.metadata).length > 0 && (
-                      <div className="text-[11px] text-[#707881] mt-0.5 truncate">
+                      <div className="text-[11px] text-[#786f62] mt-0.5 truncate">
                         {Object.entries(entry.metadata)
                           .filter(([, value]) => value !== null && value !== undefined && value !== '')
                           .map(([key, value]) => `${key}: ${String(value)}`)
@@ -411,7 +411,7 @@ const Detail: React.FC<{
                       </div>
                     )}
                   </div>
-                  <div className="text-[11px] text-[#707881] whitespace-nowrap">{fmtDate(entry.createdAt)}</div>
+                  <div className="text-[11px] text-[#786f62] whitespace-nowrap">{fmtDate(entry.createdAt)}</div>
                 </li>
               ))}
             </ul>
@@ -426,7 +426,7 @@ const Detail: React.FC<{
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-[#f2f3ff] text-[#707881] uppercase text-[10px] font-bold">
+                <thead className="bg-[#e7ddd0] text-[#786f62] uppercase text-[10px] font-bold">
                   <tr>
                     <th className="p-3">Reference</th>
                     <th className="p-3">Guest</th>
@@ -435,18 +435,18 @@ const Detail: React.FC<{
                     <th className="p-3">Created</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#ebedff]">
+                <tbody className="divide-y divide-[#e7ddd0]">
                   {data.bookings.map((booking) => (
                     <tr key={booking.id}>
-                      <td className="p-3 font-mono font-semibold text-[#006194]">{booking.reference}</td>
-                      <td className="p-3 text-[#111a36]">{booking.guestName ?? '—'}</td>
+                      <td className="p-3 font-mono font-semibold text-[#d99d26]">{booking.reference}</td>
+                      <td className="p-3 text-[#161410]">{booking.guestName ?? '—'}</td>
                       <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${STATUS_COLORS[booking.status] ?? 'bg-[#f2f3ff] text-[#707881]'}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${STATUS_COLORS[booking.status] ?? 'bg-[#e7ddd0] text-[#786f62]'}`}>
                           {booking.status.replace(/_/g, ' ')}
                         </span>
                       </td>
-                      <td className="p-3 text-right font-semibold text-[#111a36]">{fmtMoney(booking.totalAmount, currency)}</td>
-                      <td className="p-3 text-[#707881]">{fmtDate(booking.createdAt)}</td>
+                      <td className="p-3 text-right font-semibold text-[#161410]">{fmtMoney(booking.totalAmount, currency)}</td>
+                      <td className="p-3 text-[#786f62]">{fmtDate(booking.createdAt)}</td>
                     </tr>
                   ))}
                 </tbody>

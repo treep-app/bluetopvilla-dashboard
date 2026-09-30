@@ -82,29 +82,29 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
         <Loading />
       ) : (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-xl bg-[#f2f3ff] border border-[#bfc7d2]/30">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-xl bg-[#e7ddd0] border border-[#cfc4b4]/30">
             <div>
-              <div className="text-[#707881]">Status</div>
+              <div className="text-[#786f62]">Status</div>
               <span className={`inline-block mt-0.5 px-2 py-0.5 rounded-full text-[11px] font-bold ${STAGE_BADGE[b.stage]}`}>
                 {STAGE_LABELS[b.stage]}
               </span>
             </div>
             <div>
-              <div className="text-[#707881]">Stay</div>
+              <div className="text-[#786f62]">Stay</div>
               <div className="font-semibold">
                 {formatDay(b.checkIn)} → {formatDay(b.checkOut)}
               </div>
             </div>
             <div>
-              <div className="text-[#707881]">Guests</div>
+              <div className="text-[#786f62]">Guests</div>
               <div className="font-semibold">
                 {b.adults} adult(s){b.children ? `, ${b.children} child(ren)` : ''}
               </div>
             </div>
             <div>
-              <div className="text-[#707881]">Contact</div>
+              <div className="text-[#786f62]">Contact</div>
               <div className="font-semibold truncate">{b.guest.phone}</div>
-              {b.guest.email ? <div className="truncate text-[#707881]">{b.guest.email}</div> : null}
+              {b.guest.email ? <div className="truncate text-[#786f62]">{b.guest.email}</div> : null}
             </div>
           </div>
 
@@ -113,23 +113,23 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
               Online payment pending — the room is held until {formatDateTime(b.holdExpiresAt, property?.timezone)}. Recording a desk payment confirms it.
             </p>
           ) : null}
-          {b.specialRequests ? <p className="text-[#3f4850]"><strong>Requests:</strong> {b.specialRequests}</p> : null}
+          {b.specialRequests ? <p className="text-[#3c3832]"><strong>Requests:</strong> {b.specialRequests}</p> : null}
 
-          <table className="w-full text-left border border-[#bfc7d2]/40 rounded-xl overflow-hidden">
-            <thead className="bg-[#f2f3ff] text-[#707881] text-[11px] uppercase font-bold">
+          <table className="w-full text-left border border-[#cfc4b4]/40 rounded-xl overflow-hidden">
+            <thead className="bg-[#e7ddd0] text-[#786f62] text-[11px] uppercase font-bold">
               <tr>
                 <th className="p-3">Item</th>
                 <th className="p-3">Room</th>
                 <th className="p-3 text-right">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#ebedff]">
+            <tbody className="divide-y divide-[#e7ddd0]">
               {b.lines.map((line) => (
                 <tr key={line.id}>
                   <td className="p-3 font-medium">
                     {line.roomTypeName} · {line.nights} night(s) × {money(line.nightly)}
                   </td>
-                  <td className="p-3 text-[#707881]">{line.roomName ?? 'Not assigned'}</td>
+                  <td className="p-3 text-[#786f62]">{line.roomName ?? 'Not assigned'}</td>
                   <td className="p-3 text-right font-bold tabular-nums">{money(line.lineTotal)}</td>
                 </tr>
               ))}
@@ -146,17 +146,17 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
           </table>
 
           <div>
-            <div className="font-bold text-[#111a36] mb-1.5">Payments</div>
+            <div className="font-bold text-[#161410] mb-1.5">Payments</div>
             {b.payments.length === 0 ? (
-              <p className="text-[#707881]">No payments yet.</p>
+              <p className="text-[#786f62]">No payments yet.</p>
             ) : (
               <div className="space-y-1">
                 {b.payments.map((payment) => (
-                  <div key={payment.id} className="flex justify-between p-2 rounded-lg bg-[#faf8ff] border border-[#ebedff]">
+                  <div key={payment.id} className="flex justify-between p-2 rounded-lg bg-[#f4efe6] border border-[#e7ddd0]">
                     <span>
                       {PROVIDER_LABELS[payment.provider]}
                       {payment.method ? ` · ${PAYMENT_METHOD_LABELS[payment.method] ?? payment.method}` : ''}
-                      <span className="text-[#707881]">
+                      <span className="text-[#786f62]">
                         {' '}
                         · {payment.status.toLowerCase().replace('_', ' ')} ·{' '}
                         {formatDateTime(payment.paidAt ?? payment.createdAt, property?.timezone)}
@@ -169,19 +169,19 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
             )}
           </div>
 
-          <div className="p-4 rounded-xl bg-[#faf8ff] border border-[#bfc7d2]/30 space-y-1.5">
-            <div className="flex justify-between text-[#707881]">
+          <div className="p-4 rounded-xl bg-[#f4efe6] border border-[#cfc4b4]/30 space-y-1.5">
+            <div className="flex justify-between text-[#786f62]">
               <span>Total</span>
-              <span className="font-semibold text-[#111a36] tabular-nums">{money(b.total)}</span>
+              <span className="font-semibold text-[#161410] tabular-nums">{money(b.total)}</span>
             </div>
-            <div className="flex justify-between text-[#707881]">
+            <div className="flex justify-between text-[#786f62]">
               <span>Paid</span>
               <span className="font-semibold text-emerald-700 tabular-nums">{money(b.paid)}</span>
             </div>
-            <div className="flex justify-between text-sm font-bold pt-2 border-t border-[#ebedff]">
+            <div className="flex justify-between text-sm font-bold pt-2 border-t border-[#e7ddd0]">
               <span>Balance</span>
               {['cancelled', 'expired', 'no_show'].includes(b.stage) ? (
-                <span className="text-[#707881]">Not due ({STAGE_LABELS[b.stage].toLowerCase()})</span>
+                <span className="text-[#786f62]">Not due ({STAGE_LABELS[b.stage].toLowerCase()})</span>
               ) : (
                 <span className={balance > 0 ? 'text-[#ba1a1a]' : 'text-emerald-700'}>{money(b.balance)}</span>
               )}
@@ -189,8 +189,8 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
           </div>
 
           {canPay ? (
-            <form onSubmit={submitPayment} className="p-4 rounded-xl bg-[#cce5ff]/20 border border-[#006194]/30 space-y-3">
-              <div className="font-bold text-[#006194]">Record a payment taken at the desk</div>
+            <form onSubmit={submitPayment} className="p-4 rounded-xl bg-[#e7ddd0]/20 border border-[#d99d26]/30 space-y-3">
+              <div className="font-bold text-[#d99d26]">Record a payment taken at the desk</div>
               <div className="grid grid-cols-2 gap-3">
                 <Field label={`Amount (${b.currency})`}>
                   <input

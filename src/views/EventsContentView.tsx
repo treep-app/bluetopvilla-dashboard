@@ -20,14 +20,14 @@ const EVENT_TYPE_ICONS: Array<{ key: string; label: string; symbol: string }> = 
 ];
 const typeSymbol = (icon: string | null) => EVENT_TYPE_ICONS.find((item) => item.key === icon)?.symbol ?? 'auto_awesome';
 
-const textareaClass = 'w-full p-2.5 rounded-lg border border-[#bfc7d2]/60 text-xs focus:border-[#006194] focus:outline-none';
+const textareaClass = 'w-full p-2.5 rounded-lg border border-[#cfc4b4]/60 text-xs focus:border-[#d99d26] focus:outline-none';
 
 const Thumb: React.FC<{ url: string | null }> = ({ url }) => (
-  <div className="relative w-28 aspect-[4/3] rounded-lg overflow-hidden bg-[#f2f3ff] shrink-0">
+  <div className="relative w-28 aspect-[4/3] rounded-lg overflow-hidden bg-[#e7ddd0] shrink-0">
     {url ? (
       <img src={mediaSrc(url)} alt="" className="absolute inset-0 w-full h-full object-cover" />
     ) : (
-      <div className="absolute inset-0 flex items-center justify-center text-[#707881]">
+      <div className="absolute inset-0 flex items-center justify-center text-[#786f62]">
         <Icon name="image" className="text-2xl" />
       </div>
     )}
@@ -39,7 +39,7 @@ const Visibility: React.FC<{ shown: boolean; extra?: React.ReactNode }> = ({ sho
     {shown ? (
       <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">On website</span>
     ) : (
-      <span className="px-2 py-0.5 rounded-full bg-[#ebedff] text-[#707881] text-[10px] font-bold">Hidden</span>
+      <span className="px-2 py-0.5 rounded-full bg-[#e7ddd0] text-[#786f62] text-[10px] font-bold">Hidden</span>
     )}
     {extra}
   </span>
@@ -153,7 +153,7 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
           <textarea rows={3} maxLength={4000} className={textareaClass} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </Field>
 
-        <div className="space-y-2 p-3.5 rounded-xl bg-[#f2f3ff] border border-[#bfc7d2]/30">
+        <div className="space-y-2 p-3.5 rounded-xl bg-[#e7ddd0] border border-[#cfc4b4]/30">
           <Tabs
             value={form.mode}
             onChange={(mode) => setForm({ ...form, mode })}
@@ -168,7 +168,7 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
             </Field>
           ) : (
             <div className="space-y-2">
-              <span className="font-semibold text-[#111a36] block">Every</span>
+              <span className="font-semibold text-[#161410] block">Every</span>
               <div className="flex flex-wrap gap-1.5">
                 {WEEKDAYS.map((label, day) => (
                   <button
@@ -176,7 +176,7 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
                     type="button"
                     onClick={() => toggleDay(day)}
                     className={`px-3 py-1.5 rounded-lg font-semibold border ${
-                      form.recurrenceDays.includes(day) ? 'bg-[#006194] text-white border-[#006194]' : 'bg-white border-[#bfc7d2]/60 text-[#3f4850]'
+                      form.recurrenceDays.includes(day) ? 'bg-[#d99d26] text-white border-[#d99d26]' : 'bg-white border-[#cfc4b4]/60 text-[#3c3832]'
                     }`}
                   >
                     {label}
@@ -195,7 +195,7 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
           <Field label="Where at the villa">
             <input maxLength={120} className={inputClass} value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="e.g. Poolside terrace" />
           </Field>
-          <label className="flex items-center gap-2 h-9 mt-5 font-semibold text-[#111a36] cursor-pointer">
+          <label className="flex items-center gap-2 h-9 mt-5 font-semibold text-[#161410] cursor-pointer">
             <input type="checkbox" checked={form.isPublic} onChange={(e) => setForm({ ...form, isPublic: e.target.checked })} />
             Show on the website
           </label>
@@ -217,7 +217,7 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-[#707881]">
+        <p className="text-xs text-[#786f62]">
           Hosted events guests can attend — live music, brunches, party nights. Past one-off events leave the website automatically.
         </p>
         {canEdit ? (
@@ -241,16 +241,16 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
               <Thumb url={event.imageUrl} />
               <div className="flex-1 min-w-0 text-xs space-y-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-sm font-bold text-[#111a36]">{event.title}</span>
-                  <Visibility shown={event.isPublic && !event.isPast} extra={event.isPast ? <span className="text-[10px] font-bold text-[#707881]">Past</span> : null} />
+                  <span className="text-sm font-bold text-[#161410]">{event.title}</span>
+                  <Visibility shown={event.isPublic && !event.isPast} extra={event.isPast ? <span className="text-[10px] font-bold text-[#786f62]">Past</span> : null} />
                 </div>
-                <div className="text-[#006194] font-semibold">{eventSchedule(event)}</div>
-                <div className="text-[#707881]">
+                <div className="text-[#d99d26] font-semibold">{eventSchedule(event)}</div>
+                <div className="text-[#786f62]">
                   {event.eventType}
                   {event.location ? ` · ${event.location}` : ''}
                   {event.reservations ? ` · ${event.reservations} reservation(s)` : ''}
                 </div>
-                {event.description ? <p className="text-[#3f4850] line-clamp-2">{event.description}</p> : null}
+                {event.description ? <p className="text-[#3c3832] line-clamp-2">{event.description}</p> : null}
               </div>
               {canEdit ? (
                 <div className="flex flex-col items-end gap-2 text-xs">
@@ -266,7 +266,7 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
         </div>
       )}
       {pastCount ? (
-        <button onClick={() => setShowPast(!showPast)} className="text-xs text-[#006194] font-semibold">
+        <button onClick={() => setShowPast(!showPast)} className="text-xs text-[#d99d26] font-semibold">
           {showPast ? 'Hide past events' : `Show ${pastCount} past event(s)`}
         </button>
       ) : null}
@@ -339,7 +339,7 @@ const EventTypeEditor: React.FC<{ type: EventType | null; onClose: () => void }>
           <textarea rows={3} maxLength={2000} className={textareaClass} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </Field>
         <div className="space-y-2">
-          <span className="font-semibold text-[#111a36] block">Highlights (up to 6)</span>
+          <span className="font-semibold text-[#161410] block">Highlights (up to 6)</span>
           {form.highlights.map((item, index) => (
             <div key={index} className="flex gap-2">
               <input
@@ -374,7 +374,7 @@ const EventTypeEditor: React.FC<{ type: EventType | null; onClose: () => void }>
           <Field label="Position">
             <input type="number" min={0} max={1000} className={inputClass} value={form.sortOrder} onChange={(e) => setForm({ ...form, sortOrder: e.target.value })} placeholder="Last" />
           </Field>
-          <label className="flex items-center gap-2 h-9 font-semibold text-[#111a36] cursor-pointer">
+          <label className="flex items-center gap-2 h-9 font-semibold text-[#161410] cursor-pointer">
             <input type="checkbox" checked={form.isPublished} onChange={(e) => setForm({ ...form, isPublished: e.target.checked })} />
             Show on the website
           </label>
@@ -391,7 +391,7 @@ const EventTypesTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-[#707881]">The kinds of private events the villa hosts. Each one is also an option in the venue enquiry form.</p>
+        <p className="text-xs text-[#786f62]">The kinds of private events the villa hosts. Each one is also an option in the venue enquiry form.</p>
         {canEdit ? (
           <button onClick={() => setEditing(null)} className={buttonClass.primary}>
             <Icon name="add" />
@@ -413,12 +413,12 @@ const EventTypesTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
               <Thumb url={type.imageUrl} />
               <div className="flex-1 min-w-0 text-xs space-y-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Icon name={typeSymbol(type.icon)} className="text-[16px] text-[#006194]" />
-                  <span className="text-sm font-bold text-[#111a36]">{type.title}</span>
+                  <Icon name={typeSymbol(type.icon)} className="text-[16px] text-[#d99d26]" />
+                  <span className="text-sm font-bold text-[#161410]">{type.title}</span>
                   <Visibility shown={type.isPublished} />
                 </div>
                 {type.tagline ? <div className="text-[#8d4b00] font-semibold">{type.tagline}</div> : null}
-                {type.highlights.length ? <div className="text-[#707881]">{type.highlights.join(' · ')}</div> : null}
+                {type.highlights.length ? <div className="text-[#786f62]">{type.highlights.join(' · ')}</div> : null}
                 {canEdit ? (
                   <div className="flex items-start justify-between pt-2">
                     <button onClick={() => setEditing(type)} className={buttonClass.small}>
@@ -502,7 +502,7 @@ const SpaceEditor: React.FC<{ space: EventSpace | null; onClose: () => void }> =
           <Field label="Position">
             <input type="number" min={0} max={1000} className={inputClass} value={form.sortOrder} onChange={(e) => setForm({ ...form, sortOrder: e.target.value })} placeholder="Last" />
           </Field>
-          <label className="flex items-center gap-2 h-9 font-semibold text-[#111a36] cursor-pointer">
+          <label className="flex items-center gap-2 h-9 font-semibold text-[#161410] cursor-pointer">
             <input type="checkbox" checked={form.isPublished} onChange={(e) => setForm({ ...form, isPublished: e.target.checked })} />
             Show on the website
           </label>
@@ -519,7 +519,7 @@ const SpacesTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-[#707881]">The areas of the villa available for events — lawn, reception room, guest rooms.</p>
+        <p className="text-xs text-[#786f62]">The areas of the villa available for events — lawn, reception room, guest rooms.</p>
         {canEdit ? (
           <button onClick={() => setEditing(null)} className={buttonClass.primary}>
             <Icon name="add" />
@@ -538,7 +538,7 @@ const SpacesTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
           {spaces.data.map((space) => (
             <Card key={space.id} className="overflow-hidden text-xs">
-              <div className="relative aspect-[16/10] bg-[#f2f3ff]">
+              <div className="relative aspect-[16/10] bg-[#e7ddd0]">
                 {space.imageUrl ? <img src={mediaSrc(space.imageUrl)} alt="" className="absolute inset-0 w-full h-full object-cover" /> : null}
                 {space.tag ? (
                   <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/60 text-white text-[10px] font-bold uppercase">{space.tag}</span>
@@ -546,11 +546,11 @@ const SpacesTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
               </div>
               <div className="p-3 space-y-1">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm font-bold text-[#111a36]">{space.title}</span>
+                  <span className="text-sm font-bold text-[#161410]">{space.title}</span>
                   <Visibility shown={space.isPublished} />
                 </div>
-                {space.detail ? <p className="text-[#3f4850] line-clamp-2">{space.detail}</p> : null}
-                <div className="text-[#707881]">Links to {space.href || '/venue'}</div>
+                {space.detail ? <p className="text-[#3c3832] line-clamp-2">{space.detail}</p> : null}
+                <div className="text-[#786f62]">Links to {space.href || '/venue'}</div>
                 {canEdit ? (
                   <div className="flex items-start justify-between pt-2">
                     <button onClick={() => setEditing(space)} className={buttonClass.small}>

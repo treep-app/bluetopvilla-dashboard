@@ -57,23 +57,23 @@ export const LoginScreen: React.FC = () => {
   if (setupRequired) return <SetupScreen onAlreadyDone={() => setSetupRequired(false)} />;
 
   return (
-    <div className="min-h-screen bg-[#faf8ff] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-[#bfc7d2]/40 overflow-hidden animate-in zoom-in-95 duration-200">
-        <div className="p-8 bg-[#262f4c] text-[#eff0ff] text-center space-y-2">
+    <div className="min-h-screen bg-[#f4efe6] flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-[#cfc4b4]/40 overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="p-8 bg-[#1b2c38] text-[#f4efe6] text-center space-y-2">
           <img
             src="/logo.png"
             alt="Blue Top Villa"
             className="h-10 w-auto mx-auto shadow-md"
           />
           <h1 className="text-xl font-bold tracking-tight">Blue Top Villa Dashboard</h1>
-          <p className="text-xs text-[#bfc7d2]">
+          <p className="text-xs text-[#cfc4b4]">
             Front desk, housekeeping, rates and enquiries
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="p-8 space-y-5 text-xs" noValidate>
-          <div className="p-3 rounded-lg bg-[#cce5ff]/30 text-[#001d31] text-[11px] border border-[#006194]/20 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px] text-[#006194]">verified_user</span>
+          <div className="p-3 rounded-lg bg-[#e7ddd0]/30 text-[#1b2c38] text-[11px] border border-[#d99d26]/20 flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px] text-[#d99d26]">verified_user</span>
             <span>Sign in with your staff email and password to access the terminal.</span>
           </div>
 
@@ -88,7 +88,7 @@ export const LoginScreen: React.FC = () => {
           ) : null}
 
           <div>
-            <label htmlFor="login-email" className="font-bold text-[#111a36] block mb-1.5">
+            <label htmlFor="login-email" className="font-bold text-[#161410] block mb-1.5">
               Email
             </label>
             <input
@@ -104,7 +104,7 @@ export const LoginScreen: React.FC = () => {
               className={`w-full h-9 px-3 rounded-lg border focus:outline-none disabled:opacity-60 ${
                 fieldErrors.email
                   ? "border-[#ba1a1a] focus:border-[#ba1a1a]"
-                  : "border-[#bfc7d2]/60 focus:border-[#006194]"
+                  : "border-[#cfc4b4]/60 focus:border-[#d99d26]"
               }`}
               placeholder="you@bluetopvilla.com"
             />
@@ -112,7 +112,7 @@ export const LoginScreen: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="login-password" className="font-bold text-[#111a36] block mb-1">
+            <label htmlFor="login-password" className="font-bold text-[#161410] block mb-1">
               Password
             </label>
             <div className="relative">
@@ -129,7 +129,7 @@ export const LoginScreen: React.FC = () => {
                 className={`w-full h-9 px-3 pr-10 rounded-lg border focus:outline-none disabled:opacity-60 ${
                   fieldErrors.password
                     ? "border-[#ba1a1a] focus:border-[#ba1a1a]"
-                    : "border-[#bfc7d2]/60 focus:border-[#006194]"
+                    : "border-[#cfc4b4]/60 focus:border-[#d99d26]"
                 }`}
                 placeholder="Enter your password"
               />
@@ -138,7 +138,7 @@ export const LoginScreen: React.FC = () => {
                 tabIndex={-1}
                 disabled={isSubmitting}
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#707881] hover:text-[#111a36] disabled:opacity-50"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#786f62] hover:text-[#161410] disabled:opacity-50"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 <span className="material-symbols-outlined text-[18px]">
@@ -154,7 +154,7 @@ export const LoginScreen: React.FC = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2.5 rounded-lg bg-[#006194] hover:bg-[#007bb9] disabled:bg-[#707881] disabled:hover:bg-[#707881] disabled:cursor-not-allowed text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-95 disabled:active:scale-100"
+            className="w-full py-2.5 rounded-lg bg-[#d99d26] hover:bg-[#e8b03a] disabled:bg-[#786f62] disabled:hover:bg-[#786f62] disabled:cursor-not-allowed text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-95 disabled:active:scale-100"
           >
             {isSubmitting ? (
               <>
@@ -170,7 +170,7 @@ export const LoginScreen: React.FC = () => {
           </button>
         </form>
 
-        <div className="p-4 bg-[#faf8ff] border-t border-[#ebedff] text-center text-[11px] text-[#707881]">
+        <div className="p-4 bg-[#f4efe6] border-t border-[#e7ddd0] text-center text-[11px] text-[#786f62]">
           Protected by Role-Based Access Control · JWT Session
         </div>
       </div>

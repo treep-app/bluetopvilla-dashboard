@@ -16,6 +16,7 @@ const CAPABILITIES: Array<[keyof StaffUser['permissions'], string]> = [
   ['canManageRooms', 'Add and edit room types, photos and rooms'],
   ['canHandleEnquiries', 'Handle enquiries and messages'],
   ['canManageContent', 'Edit events, event types and venue spaces'],
+  ['canManagePromotions', 'Issue Golden Tickets by email and SMS'],
   ['canViewStaff', 'View staff list'],
   ['canManageStaff', 'Create staff accounts'],
 ];
@@ -64,7 +65,7 @@ const AddStaffModal: React.FC<{ onClose: () => void; roles: BackendRole[] }> = (
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
         </Field>
-        <p className="text-[11px] text-[#707881]">
+        <p className="text-[11px] text-[#786f62]">
           Share it with them privately — no email is sent. They should change it from their account menu after signing in.
         </p>
         <div className="pt-2 flex justify-between">
@@ -98,7 +99,7 @@ export const StaffView: React.FC = () => {
               Add staff member
             </button>
           ) : (
-            <span className="px-3 py-1.5 rounded-lg bg-[#f2f3ff] text-[#707881] text-xs font-medium flex items-center gap-1">
+            <span className="px-3 py-1.5 rounded-lg bg-[#e7ddd0] text-[#786f62] text-xs font-medium flex items-center gap-1">
               <Icon name="lock" className="text-[16px]" />
               Administrators manage accounts
             </span>
@@ -120,7 +121,7 @@ export const StaffView: React.FC = () => {
             const name = [member.firstName, member.lastName].filter(Boolean).join(' ') || member.email;
             const isYou = member.id === currentUser?.id;
             return (
-              <Card key={member.id} className={`p-5 space-y-3 ${isYou ? 'ring-2 ring-[#006194]/30 border-[#006194]' : ''}`}>
+              <Card key={member.id} className={`p-5 space-y-3 ${isYou ? 'ring-2 ring-[#d99d26]/30 border-[#d99d26]' : ''}`}>
                 <div className="flex items-center justify-between">
                   <div className={`w-10 h-10 rounded-full ${avatarColorFor(member.id)} text-white font-bold flex items-center justify-center text-sm`}>
                     {name.substring(0, 2).toUpperCase()}
@@ -130,11 +131,11 @@ export const StaffView: React.FC = () => {
                   ) : null}
                 </div>
                 <div>
-                  <div className="font-bold text-sm text-[#111a36]">{name}</div>
-                  <div className="text-xs text-[#006194] font-semibold">{member.roles.map((role) => ROLE_TITLES[role]).join(', ')}</div>
-                  <div className="text-[11px] text-[#707881] mt-0.5 truncate">{member.email}</div>
+                  <div className="font-bold text-sm text-[#161410]">{name}</div>
+                  <div className="text-xs text-[#d99d26] font-semibold">{member.roles.map((role) => ROLE_TITLES[role]).join(', ')}</div>
+                  <div className="text-[11px] text-[#786f62] mt-0.5 truncate">{member.email}</div>
                 </div>
-                <div className="text-[11px] text-[#707881] pt-2 border-t border-[#ebedff]">
+                <div className="text-[11px] text-[#786f62] pt-2 border-t border-[#e7ddd0]">
                   Added {new Date(member.createdAt).toLocaleDateString('en-GB')}
                 </div>
               </Card>
@@ -144,13 +145,13 @@ export const StaffView: React.FC = () => {
       )}
 
       <Card className="overflow-hidden">
-        <div className="p-4 border-b border-[#ebedff]">
-          <h2 className="text-base font-bold text-[#111a36]">Role permissions</h2>
-          <p className="text-xs text-[#707881]">Enforced by the API on every request</p>
+        <div className="p-4 border-b border-[#e7ddd0]">
+          <h2 className="text-base font-bold text-[#161410]">Role permissions</h2>
+          <p className="text-xs text-[#786f62]">Enforced by the API on every request</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#f2f3ff] text-[#707881] uppercase text-[10px] font-bold">
+            <thead className="bg-[#e7ddd0] text-[#786f62] uppercase text-[10px] font-bold">
               <tr>
                 <th className="p-3">Capability</th>
                 {ROLES.map((role) => (
@@ -160,16 +161,16 @@ export const StaffView: React.FC = () => {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#ebedff]">
+            <tbody className="divide-y divide-[#e7ddd0]">
               {CAPABILITIES.map(([key, label]) => (
                 <tr key={key}>
-                  <td className="p-3 font-semibold text-[#111a36]">{label}</td>
+                  <td className="p-3 font-semibold text-[#161410]">{label}</td>
                   {ROLES.map((role) => (
                     <td key={role} className="p-3 text-center">
                       {permissionsFor([role])[key] ? (
                         <span className="text-emerald-700 font-bold">✓</span>
                       ) : (
-                        <span className="text-[#bfc7d2]">—</span>
+                        <span className="text-[#cfc4b4]">—</span>
                       )}
                     </td>
                   ))}

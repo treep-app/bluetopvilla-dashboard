@@ -67,30 +67,30 @@ export const RoomActionDrawer: React.FC<RoomActionDrawerProps> = ({ roomId, onCl
     >
       <ErrorNote message={update.error || saveDetails.error} />
 
-      <div className="p-3.5 rounded-xl bg-[#f2f3ff] grid grid-cols-2 gap-3">
+      <div className="p-3.5 rounded-xl bg-[#e7ddd0] grid grid-cols-2 gap-3">
         <div>
-          <span className="text-[#707881]">Housekeeping</span>
+          <span className="text-[#786f62]">Housekeeping</span>
           <div className="font-semibold">{room.housekeeping.toLowerCase()}</div>
         </div>
         <div>
-          <span className="text-[#707881]">Last cleaned</span>
+          <span className="text-[#786f62]">Last cleaned</span>
           <div className="font-semibold">{room.lastCleanedAt ? formatDateTime(room.lastCleanedAt, property?.timezone) : '—'}</div>
         </div>
         <div>
-          <span className="text-[#707881]">Housekeeper</span>
+          <span className="text-[#786f62]">Housekeeper</span>
           <div className="font-semibold">{room.housekeeper ?? '—'}</div>
         </div>
         <div>
-          <span className="text-[#707881]">Guest</span>
+          <span className="text-[#786f62]">Guest</span>
           <div className="font-semibold">{room.currentStay?.guestName ?? 'Vacant'}</div>
         </div>
       </div>
 
       {room.currentStay ? (
-        <div className="p-4 rounded-xl border border-[#006194]/30 bg-[#cce5ff]/20 flex items-center justify-between">
+        <div className="p-4 rounded-xl border border-[#d99d26]/30 bg-[#e7ddd0]/20 flex items-center justify-between">
           <div>
-            <div className="font-bold text-[#006194]">{room.currentStay.reference}</div>
-            <div className="text-[#707881]">Checks out {formatDay(room.currentStay.checkOut)}</div>
+            <div className="font-bold text-[#d99d26]">{room.currentStay.reference}</div>
+            <div className="text-[#786f62]">Checks out {formatDay(room.currentStay.checkOut)}</div>
           </div>
           <button onClick={() => onOpenFolio(room.currentStay!.bookingId)} className={buttonClass.small}>
             Open folio
@@ -101,7 +101,7 @@ export const RoomActionDrawer: React.FC<RoomActionDrawerProps> = ({ roomId, onCl
       {canEdit ? (
         <>
           <div className="space-y-2">
-            <div className="font-bold text-[#111a36]">Housekeeping status</div>
+            <div className="font-bold text-[#161410]">Housekeeping status</div>
             <div className="grid grid-cols-3 gap-2">
               {HOUSEKEEPING.map((option) => (
                 <button
@@ -110,8 +110,8 @@ export const RoomActionDrawer: React.FC<RoomActionDrawerProps> = ({ roomId, onCl
                   onClick={() => void update.run(room.id, { housekeeping: option.value })}
                   className={`p-2.5 rounded-lg border text-left flex items-center gap-2 ${
                     room.housekeeping === option.value
-                      ? 'border-[#006194] bg-[#cce5ff]/30 font-semibold ring-1 ring-[#006194]'
-                      : 'border-[#bfc7d2]/40 hover:bg-[#f2f3ff]'
+                      ? 'border-[#d99d26] bg-[#e7ddd0]/30 font-semibold ring-1 ring-[#d99d26]'
+                      : 'border-[#cfc4b4]/40 hover:bg-[#e7ddd0]'
                   }`}
                 >
                   <span className={`w-2.5 h-2.5 rounded-full ${option.dot}`} />
@@ -171,14 +171,14 @@ export const RoomActionDrawer: React.FC<RoomActionDrawerProps> = ({ roomId, onCl
                 Take out of service
               </button>
             )}
-            <p className="text-[11px] text-[#707881]">Out-of-service rooms stop being sold on the website until resolved.</p>
+            <p className="text-[11px] text-[#786f62]">Out-of-service rooms stop being sold on the website until resolved.</p>
           </div>
         </>
       ) : null}
 
       {canManageRooms ? (
-        <div className="space-y-3 p-4 rounded-xl border border-[#bfc7d2]/40">
-          <div className="font-bold text-[#111a36]">Room details</div>
+        <div className="space-y-3 p-4 rounded-xl border border-[#cfc4b4]/40">
+          <div className="font-bold text-[#161410]">Room details</div>
           <Field label="Name">
             <input
               maxLength={60}
@@ -215,7 +215,7 @@ export const RoomActionDrawer: React.FC<RoomActionDrawerProps> = ({ roomId, onCl
               Retire room
             </button>
           </div>
-          {room.currentStay ? <p className="text-[11px] text-[#707881]">Check the guest out before retiring this room.</p> : null}
+          {room.currentStay ? <p className="text-[11px] text-[#786f62]">Check the guest out before retiring this room.</p> : null}
         </div>
       ) : null}
     </Drawer>

@@ -1,7 +1,7 @@
 import type { BackendRole, StaffUser } from "../types/hotel";
 import type { AuthUser } from "./authService";
 
-const AVATAR_COLORS = ["bg-[#006194]", "bg-[#8d4b00]", "bg-[#565d79]", "bg-emerald-600", "bg-indigo-600"];
+const AVATAR_COLORS = ["bg-[#d99d26]", "bg-[#8d4b00]", "bg-[#2a3540]", "bg-emerald-600", "bg-indigo-600"];
 
 export const ROLE_TITLES: Record<BackendRole, string> = {
   SUPER_ADMIN: "Super Administrator",
@@ -31,6 +31,7 @@ export function permissionsFor(roles: BackendRole[]): StaffUser["permissions"] {
     canManageStaff: has("SUPER_ADMIN", "ADMIN"),
     canHandleEnquiries: has("SUPER_ADMIN", "ADMIN", "MANAGER", "STAFF", "CONTENT_EDITOR"),
     canManageContent: has("SUPER_ADMIN", "ADMIN", "MANAGER", "CONTENT_EDITOR"),
+    canManagePromotions: has("SUPER_ADMIN", "ADMIN", "MANAGER"),
   };
 }
 

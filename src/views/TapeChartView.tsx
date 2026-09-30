@@ -17,12 +17,12 @@ const LIVE_STAGES = new Set(['pending_payment', 'upcoming', 'arriving', 'in_hous
 
 const barClass = (booking: Booking) =>
   booking.stage === 'in_house'
-    ? 'bg-[#006194] text-white'
+    ? 'bg-[#d99d26] text-white'
     : booking.stage === 'pending_payment'
       ? 'bg-amber-100 text-amber-900 border border-amber-300'
       : booking.stage === 'departed'
-        ? 'bg-[#ebedff] text-[#707881]'
-        : 'bg-[#565d79] text-white';
+        ? 'bg-[#e7ddd0] text-[#786f62]'
+        : 'bg-[#2a3540] text-white';
 
 export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOpenFolio, onOpenNewReservation }) => {
   const { hasPermission } = useHotel();
@@ -50,12 +50,12 @@ export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOp
         <td
           key={date}
           onClick={emptyAction}
-          className={`p-1 border-r border-[#bfc7d2]/20 ${emptyAction ? 'cursor-pointer hover:bg-[#ebedff]/60' : ''}`}
+          className={`p-1 border-r border-[#cfc4b4]/20 ${emptyAction ? 'cursor-pointer hover:bg-[#e7ddd0]/60' : ''}`}
         />
       );
     }
     return (
-      <td key={date} className="p-1 border-r border-[#bfc7d2]/20 align-top space-y-1">
+      <td key={date} className="p-1 border-r border-[#cfc4b4]/20 align-top space-y-1">
         {hits.map((booking) => (
           <button
             key={booking.id}
@@ -101,13 +101,13 @@ export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOp
         }
       />
 
-      <div className="flex flex-wrap items-center gap-4 text-xs bg-white p-3 rounded-xl border border-[#bfc7d2]/30">
-        <span className="font-bold text-[#111a36]">Legend:</span>
+      <div className="flex flex-wrap items-center gap-4 text-xs bg-white p-3 rounded-xl border border-[#cfc4b4]/30">
+        <span className="font-bold text-[#161410]">Legend:</span>
         {[
-          ['bg-[#006194]', 'In house'],
-          ['bg-[#565d79]', 'Confirmed'],
+          ['bg-[#d99d26]', 'In house'],
+          ['bg-[#2a3540]', 'Confirmed'],
           ['bg-amber-100 border border-amber-300', 'Awaiting payment'],
-          ['bg-[#ebedff]', 'Departed'],
+          ['bg-[#e7ddd0]', 'Departed'],
         ].map(([color, label]) => (
           <span key={label} className="flex items-center gap-1.5">
             <span className={`w-3 h-3 rounded ${color}`} />
@@ -125,15 +125,15 @@ export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOp
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-xs">
               <thead>
-                <tr className="bg-[#f2f3ff] border-b border-[#bfc7d2]/40">
-                  <th className="p-3 w-44 text-left font-bold text-[#707881] uppercase text-[11px] sticky left-0 bg-[#f2f3ff] z-10 border-r border-[#bfc7d2]/30">
+                <tr className="bg-[#e7ddd0] border-b border-[#cfc4b4]/40">
+                  <th className="p-3 w-44 text-left font-bold text-[#786f62] uppercase text-[11px] sticky left-0 bg-[#e7ddd0] z-10 border-r border-[#cfc4b4]/30">
                     Room
                   </th>
                   {dates.map((date) => (
                     <th
                       key={date}
-                      className={`p-2 text-center min-w-[88px] font-bold border-r border-[#bfc7d2]/20 ${
-                        date === today ? 'bg-[#cce5ff]/40 text-[#006194]' : 'text-[#707881]'
+                      className={`p-2 text-center min-w-[88px] font-bold border-r border-[#cfc4b4]/20 ${
+                        date === today ? 'bg-[#e7ddd0]/40 text-[#d99d26]' : 'text-[#786f62]'
                       }`}
                     >
                       {formatDay(date)}
@@ -141,14 +141,14 @@ export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOp
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ebedff]">
+              <tbody className="divide-y divide-[#e7ddd0]">
                 {types.data.map((type) => {
                   const typeRooms = rooms.data!.filter((room) => room.roomTypeId === type.id);
                   const pending = unassigned(type.id);
                   return (
                     <React.Fragment key={type.id}>
-                      <tr className="bg-[#faf8ff]">
-                        <td colSpan={DAYS + 1} className="px-3 py-1.5 text-[11px] font-bold uppercase text-[#707881] tracking-wider">
+                      <tr className="bg-[#f4efe6]">
+                        <td colSpan={DAYS + 1} className="px-3 py-1.5 text-[11px] font-bold uppercase text-[#786f62] tracking-wider">
                           {type.name}
                         </td>
                       </tr>
@@ -156,9 +156,9 @@ export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOp
                         <tr key={room.id}>
                           <td
                             onClick={() => onSelectRoom(room.id)}
-                            className="p-3 sticky left-0 bg-white hover:bg-[#f2f3ff] cursor-pointer z-10 border-r border-[#bfc7d2]/30"
+                            className="p-3 sticky left-0 bg-white hover:bg-[#e7ddd0] cursor-pointer z-10 border-r border-[#cfc4b4]/30"
                           >
-                            <div className="font-bold text-[#006194]">{room.name}</div>
+                            <div className="font-bold text-[#d99d26]">{room.name}</div>
                             <span className={`text-[9px] px-1.5 py-0.5 rounded font-bold ${ROOM_STATUS_BADGE[room.status]}`}>
                               {ROOM_STATUS_LABELS[room.status]}
                             </span>
@@ -168,7 +168,7 @@ export const TapeChartView: React.FC<TapeChartViewProps> = ({ onSelectRoom, onOp
                       ))}
                       {pending.length > 0 && (
                         <tr>
-                          <td className="p-3 sticky left-0 bg-white z-10 border-r border-[#bfc7d2]/30 text-[11px] text-[#707881] font-semibold">
+                          <td className="p-3 sticky left-0 bg-white z-10 border-r border-[#cfc4b4]/30 text-[11px] text-[#786f62] font-semibold">
                             Not yet assigned
                           </td>
                           {dates.map((date) => cell(pending, date))}

@@ -18,6 +18,12 @@ export type NavScreen =
   | 'leave'
   | 'enquiries'
   | 'events-content'
+  | 'golden-tickets'
+  | 'contacts'
+  | 'newsletter-subscribers'
+  | 'sms-templates'
+  | 'sms-campaigns'
+  | 'sms-deliveries'
   | 'staff';
 
 type NavItem = {
@@ -36,8 +42,6 @@ const SECTIONS: Array<{ title: string; items: NavItem[] }> = [
     title: 'Overview',
     items: [
       { screen: 'dashboard', label: 'Dashboard', icon: 'dashboard', permission: 'canViewOperations' },
-      { screen: 'employees', label: 'Employees', icon: 'badge', permission: 'canViewStaff' },
-      { screen: 'leave', label: 'Leave requests', icon: 'event_busy', permission: 'canViewStaff' },
     ],
   },
   {
@@ -90,6 +94,29 @@ const SECTIONS: Array<{ title: string; items: NavItem[] }> = [
     ],
   },
   {
+    title: 'People',
+    items: [
+      { screen: 'employees', label: 'Employees', icon: 'badge', permission: 'canViewStaff' },
+      { screen: 'leave', label: 'Leave requests', icon: 'event_busy', permission: 'canViewStaff' },
+    ],
+  },
+  {
+    title: 'Marketing',
+    items: [
+      { screen: 'contacts', label: 'Contacts', icon: 'contacts', permission: 'canManagePromotions' },
+      {
+        screen: 'newsletter-subscribers',
+        label: 'Newsletter',
+        icon: 'mark_email_unread',
+        permission: 'canManagePromotions',
+      },
+      { screen: 'sms-templates', label: 'SMS Templates', icon: 'sms', permission: 'canManagePromotions' },
+      { screen: 'sms-campaigns', label: 'SMS Campaigns', icon: 'campaign', permission: 'canManagePromotions' },
+      { screen: 'sms-deliveries', label: 'SMS Deliveries', icon: 'mark_chat_unread', permission: 'canManagePromotions' },
+      { screen: 'golden-tickets', label: 'Golden Tickets', icon: 'confirmation_number', permission: 'canManagePromotions' },
+    ],
+  },
+  {
     title: 'Website',
     items: [{ screen: 'events-content', label: 'Events page', icon: 'celebration', permission: 'canManageContent' }],
   },
@@ -118,16 +145,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-[#262f4c] z-50 flex flex-col select-none">
-      <div className="h-16 px-4 flex items-center gap-2.5 border-b border-[#707881]/20">
+    <aside className="fixed left-0 top-0 h-full w-64 bg-[#1b2c38] z-50 flex flex-col select-none">
+      <div className="h-16 px-4 flex items-center gap-2.5 border-b border-[#786f62]/20">
         <img
           src="/logo.png"
           alt="Blue Top Villa"
           className="h-8 w-auto rounded-md bg-white/95 px-1.5 py-1 shadow-xs"
         />
         <div className="min-w-0">
-          <div className="font-bold text-sm text-[#eff0ff] leading-tight truncate">{property?.name ?? 'Dashboard'}</div>
-          <div className="text-[11px] text-[#bfc7d2] leading-none truncate">{property?.address ?? 'Hotel operations'}</div>
+          <div className="font-bold text-sm text-[#f4efe6] leading-tight truncate">{property?.name ?? 'Dashboard'}</div>
+          <div className="text-[11px] text-[#cfc4b4] leading-none truncate">{property?.address ?? 'Hotel operations'}</div>
         </div>
       </div>
 
@@ -137,7 +164,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
           if (!items.length) return null;
           return (
             <div key={section.title} className="space-y-1">
-              <div className="px-2 py-0.5 text-[10px] uppercase tracking-wider text-[#bfc7d2]/70 font-bold">
+              <div className="px-2 py-0.5 text-[10px] uppercase tracking-wider text-[#cfc4b4]/70 font-bold">
                 {section.title}
               </div>
               {items.map((item) => {
@@ -148,7 +175,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
                     key={item.screen}
                     onClick={() => onNavigate(item.screen)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                      active ? 'bg-[#006194] text-white font-semibold shadow-xs' : 'text-[#eff0ff]/80 hover:bg-white/10 hover:text-white'
+                      active ? 'bg-[#d99d26] text-white font-semibold shadow-xs' : 'text-[#f4efe6]/80 hover:bg-white/10 hover:text-white'
                     }`}
                   >
                     <span className="flex items-center gap-2.5">
@@ -156,7 +183,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
                       {item.label}
                     </span>
                     {badge > 0 ? (
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full text-white font-bold ${item.badgeClass ?? 'bg-[#007bb9]'}`}>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full text-white font-bold ${item.badgeClass ?? 'bg-[#e8b03a]'}`}>
                         {badge}
                       </span>
                     ) : null}
@@ -166,7 +193,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
               {section.title === 'Reservations' && hasPermission('canFrontDesk') ? (
                 <button
                   onClick={onOpenNewReservation}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[#eff0ff]/80 hover:bg-white/10 hover:text-white transition-colors"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[#f4efe6]/80 hover:bg-white/10 hover:text-white transition-colors"
                 >
                   <Icon name="add_circle" />
                   New reservation
@@ -177,10 +204,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentScreen, onNavigate, onO
         })}
       </nav>
 
-      <div className="p-3 border-t border-[#707881]/20">
-        <div className="p-2.5 rounded-lg bg-white/5 text-[#eff0ff] border border-white/5">
+      <div className="p-3 border-t border-[#786f62]/20">
+        <div className="p-2.5 rounded-lg bg-white/5 text-[#f4efe6] border border-white/5">
           <div className="text-xs font-semibold truncate">{currentUser?.name}</div>
-          <div className="text-[11px] text-[#bfc7d2] truncate">{currentUser?.roleTitle}</div>
+          <div className="text-[11px] text-[#cfc4b4] truncate">{currentUser?.roleTitle}</div>
         </div>
       </div>
     </aside>

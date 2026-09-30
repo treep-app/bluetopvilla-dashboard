@@ -67,14 +67,14 @@ export const RoomMatrixView: React.FC<RoomMatrixViewProps> = ({ mode, onSelectRo
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
         {(['clean', 'occupied', 'dirty', 'cleaning', 'oos'] as const).map((status) => (
           <Card key={status} className="p-3">
-            <span className="text-[#707881]">{ROOM_STATUS_LABELS[status]}</span>
-            <div className="text-lg font-bold text-[#111a36]">{count(status)}</div>
+            <span className="text-[#786f62]">{ROOM_STATUS_LABELS[status]}</span>
+            <div className="text-lg font-bold text-[#161410]">{count(status)}</div>
           </Card>
         ))}
       </div>
 
       <Card className="p-3.5 flex flex-wrap items-center gap-1 text-xs">
-        <span className="text-[#707881] font-semibold mr-1">Show:</span>
+        <span className="text-[#786f62] font-semibold mr-1">Show:</span>
         {(
           [
             ['all', 'All'],
@@ -88,7 +88,7 @@ export const RoomMatrixView: React.FC<RoomMatrixViewProps> = ({ mode, onSelectRo
             key={value}
             onClick={() => setFilter(value)}
             className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
-              filter === value ? 'bg-[#111a36] text-white' : 'bg-[#f2f3ff] text-[#3f4850] hover:bg-[#ebedff]'
+              filter === value ? 'bg-[#161410] text-white' : 'bg-[#e7ddd0] text-[#3c3832] hover:bg-[#e7ddd0]'
             }`}
           >
             {label}
@@ -113,24 +113,24 @@ export const RoomMatrixView: React.FC<RoomMatrixViewProps> = ({ mode, onSelectRo
             <button
               key={room.id}
               onClick={() => onSelectRoom(room.id)}
-              className="p-4 rounded-xl bg-white border border-[#bfc7d2]/40 hover:border-[#006194] hover:shadow-md text-left transition-all flex flex-col justify-between min-h-40 shadow-xs"
+              className="p-4 rounded-xl bg-white border border-[#cfc4b4]/40 hover:border-[#d99d26] hover:shadow-md text-left transition-all flex flex-col justify-between min-h-40 shadow-xs"
             >
               <div>
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-lg font-bold text-[#006194]">{room.name}</span>
+                  <span className="text-lg font-bold text-[#d99d26]">{room.name}</span>
                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ROOM_STATUS_BADGE[room.status]}`}>
                     {ROOM_STATUS_LABELS[room.status]}
                   </span>
                 </div>
-                <div className="text-[11px] text-[#707881]">
+                <div className="text-[11px] text-[#786f62]">
                   {room.roomTypeName}
                   {room.floor ? ` · ${room.floor}` : ''}
                   {room.code ? ` · #${room.code}` : ''}
                 </div>
               </div>
-              <div className="space-y-1 pt-2 mt-2 border-t border-[#ebedff] text-[11px]">
+              <div className="space-y-1 pt-2 mt-2 border-t border-[#e7ddd0] text-[11px]">
                 {room.currentStay ? (
-                  <div className="text-[#111a36] truncate">
+                  <div className="text-[#161410] truncate">
                     <strong>{room.currentStay.guestName}</strong> · out {room.currentStay.checkOut}
                   </div>
                 ) : null}
@@ -143,9 +143,9 @@ export const RoomMatrixView: React.FC<RoomMatrixViewProps> = ({ mode, onSelectRo
                 {room.status === 'clean' && room.lastCleanedAt ? (
                   <div className="text-emerald-700">Cleaned {formatDateTime(room.lastCleanedAt, property?.timezone)}</div>
                 ) : null}
-                <div className="flex items-center justify-between text-[#707881]">
+                <div className="flex items-center justify-between text-[#786f62]">
                   <span>Rate / night</span>
-                  <span className="font-bold text-[#111a36]">{formatMoney(room.basePrice, room.currency)}</span>
+                  <span className="font-bold text-[#161410]">{formatMoney(room.basePrice, room.currency)}</span>
                 </div>
               </div>
             </button>

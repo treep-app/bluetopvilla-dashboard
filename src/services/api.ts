@@ -24,6 +24,18 @@ import type {
   LeaveCalendar,
   CreateEmployeeInput,
   UpdateEmployeeInput,
+  GoldenTicket,
+  GoldenTicketCampaign,
+  GoldenTicketRecipient,
+  IssueGoldenTicketInput,
+  MarketingContact,
+  NewsletterSubscriber,
+  SmsTemplate,
+  SmsCampaign,
+  SmsCampaignDetail,
+  SmsHubDelivery,
+  SmsHubDeliveryOutcome,
+  SmsHubStatus,
 } from '../types/hotel';
 import { request } from './authService';
 
@@ -202,4 +214,100 @@ export const api = {
   updateEventReservation: (id: string, status: EnquiryStatus) =>
     request(`/admin/enquiries/events/${id}`, patch({ status })),
   markMessageRead: (id: string) => request(`/admin/enquiries/contact/${id}/read`, post()),
+
+  goldenTicketCampaigns: () => request<GoldenTicketCampaign[]>('/admin/golden-tickets/campaigns'),
+  goldenTicketRecipients: (q?: string) =>
+    request<GoldenTicketRecipient[]>(`/admin/golden-tickets/recipients${query({ q })}`),
+  goldenTickets: (params: { status?: string; q?: string; campaignId?: string; limit?: number; offset?: number } = {}) =>
+    request<{ items: GoldenTicket[]; total: number; limit: number; offset: number }>(
+      `/admin/golden-tickets${query(params)}`,
+    ),
+  goldenTicket: (id: string) => request<GoldenTicket>(`/admin/golden-tickets/${id}`),
+  issueGoldenTicket: (body: IssueGoldenTicketInput) =>
+    request<{
+      created: boolean;
+      alreadyExists: boolean;
+      emailed: boolean;
+      emailSkipped?: boolean;
+      smsSent: boolean;
+      smsSkipped?: boolean;
+      smsFailed?: boolean;
+      smsError?: string | null;
+      tip?: string;
+      smsPreview?: string;
+      ticket: GoldenTicket;
+    }>('/admin/golden-tickets/issue', post(body)),
+  cancelGoldenTicket: (id: string) =>
+    request<{ alreadyCancelled: boolean; ticket: GoldenTicket }>(`/admin/golden-tickets/${id}/cancel`, post()),
+
+  // Marketing — contacts, templates, SMS campaigns
+  marketingContacts: (params: { q?: string; limit?: number; offset?: number } = {}) =>
+    request<{ items: MarketingContact[]; total: number }>(`/admin/marketing/contacts${query(params)}`),
+  createMarketingContact: (body: { phone: string; name?: string; email?: string; tags?: string[]; notes?: string }) =>
+    request<MarketingContact>('/admin/marketing/contacts', post(body)),
+  updateMarketingContact: (
+    id: string,
+    body: { phone?: string; name?: string | null; email?: string | null; tags?: string[]; notes?: string | null },
+  ) => request<MarketingContact>(`/admin/marketing/contacts/${id}`, patch(body)),
+  deleteMarketingContact: (id: string) => request<{ deleted: boolean }>(`/admin/marketing/contacts/${id}`, del),
+  newsletterSubscribers: (params: { q?: string; limit?: number; offset?: number } = {}) =>
+    request<{ items: NewsletterSubscriber[]; total: number }>(
+      `/admin/marketing/newsletter-subscribers${query(params)}`,
+    ),
+  deleteNewsletterSubscriber: (id: string) =>
+    request<{ deleted: boolean }>(`/admin/marketing/newsletter-subscribers/${id}`, del),
+  importMarketingContactsFile: (file: File) => {
+    const form = new FormData();
+    form.append('file', file);
+    return request<{
+      created: number;
+      updated: number;
+      skipped: number;
+      total: number;
+      errors: Array<{ row: number; phone?: string; error: string }>;
+    }>('/admin/marketing/contacts/import-file', { method: 'POST', body: form }, 60_000);
+  },
+
+  smsTemplates: () => request<SmsTemplate[]>('/admin/marketing/sms-templates'),
+  createSmsTemplate: (body: { name: string; body: string; description?: string; isDefault?: boolean }) =>
+    request<SmsTemplate>('/admin/marketing/sms-templates', post(body)),
+  updateSmsTemplate: (
+    id: string,
+    body: { name?: string; body?: string; description?: string | null; isDefault?: boolean },
+  ) => request<SmsTemplate>(`/admin/marketing/sms-templates/${id}`, patch(body)),
+  deleteSmsTemplate: (id: string) => request<{ deleted: boolean }>(`/admin/marketing/sms-templates/${id}`, del),
+
+  createCouponCampaign: (body: {
+    name: string;
+    offerTitle: string;
+    offerSubtitle?: string;
+    offerTerms?: string;
+    description?: string;
+    expiryDays?: number;
+    discountPercent?: number;
+    isDefault?: boolean;
+  }) => request<GoldenTicketCampaign>('/admin/marketing/coupon-campaigns', post(body)),
+
+  smsCampaigns: () => request<SmsCampaign[]>('/admin/marketing/sms-campaigns'),
+  smsCampaign: (id: string) => request<SmsCampaignDetail>(`/admin/marketing/sms-campaigns/${id}`),
+  createSmsCampaign: (body: {
+    name: string;
+    description?: string;
+    templateId?: string;
+    body?: string;
+    goldenTicketCampaignId?: string;
+    contactIds?: string[];
+  }) => request<SmsCampaign>('/admin/marketing/sms-campaigns', post(body)),
+  sendSmsCampaign: (id: string) =>
+    request<SmsCampaign & { sent: number; failed: number; skipped: number }>(
+      `/admin/marketing/sms-campaigns/${id}/send`,
+      post(),
+    ),
+  cancelSmsCampaign: (id: string) => request(`/admin/marketing/sms-campaigns/${id}/cancel`, post()),
+
+  // Hubtel SMS delivery log (Redis)
+  smsStatus: () => request<SmsHubStatus>('/admin/sms/status'),
+  smsDeliveries: (params: { outcome?: SmsHubDeliveryOutcome; phone?: string; limit?: number; offset?: number } = {}) =>
+    request<{ items: SmsHubDelivery[]; total: number }>(`/admin/sms/deliveries${query(params)}`),
+  smsDelivery: (id: string) => request<SmsHubDelivery | null>(`/admin/sms/deliveries/${id}`),
 };

@@ -374,7 +374,159 @@ export interface StaffUser {
     canHandleEnquiries: boolean;
     /** Edit website content: events, event types and venue spaces. */
     canManageContent: boolean;
+    /** Issue and manage Golden Ticket promos (email + SMS). */
+    canManagePromotions: boolean;
   };
+}
+
+export type GoldenTicketStatus = 'ISSUED' | 'REVEALED' | 'REDEEMED' | 'EXPIRED' | 'CANCELLED';
+export type SmsDeliveryStatus = 'NONE' | 'PENDING' | 'SENT' | 'FAILED' | 'SKIPPED';
+
+export interface GoldenTicketCampaign {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  offerTitle: string;
+  offerSubtitle: string | null;
+  offerTerms: string | null;
+  status: string;
+  expiryDays: number;
+  discountPercent?: number;
+  isDefault: boolean;
+}
+
+export interface GoldenTicketRecipient {
+  phone: string;
+  displayPhone: string;
+  guestName: string | null;
+  email: string | null;
+  source: string;
+}
+
+export interface GoldenTicket {
+  id: string;
+  email: string | null;
+  phone: string | null;
+  guestName: string | null;
+  promoCode: string;
+  status: GoldenTicketStatus;
+  storedStatus: GoldenTicketStatus;
+  expiresAt: string;
+  revealedAt: string | null;
+  redeemedAt: string | null;
+  emailSentAt: string | null;
+  smsSentAt: string | null;
+  smsStatus: SmsDeliveryStatus;
+  smsError: string | null;
+  createdAt: string;
+  campaignId: string;
+  campaignName: string;
+  offerTitle: string;
+  offerSubtitle: string | null;
+  offerTerms: string | null;
+  expiryDays: number | null;
+  scratchUrl: string;
+  /** Exact SMS text the customer receives / will receive. */
+  smsBody: string;
+}
+
+export type IssueGoldenTicketInput = {
+  email?: string;
+  phone?: string;
+  guestName?: string;
+  campaignId?: string;
+  sendEmail?: boolean;
+  sendSms?: boolean;
+  resend?: boolean;
+  refreshExpiry?: boolean;
+};
+
+export interface MarketingContact {
+  id: string;
+  phone: string;
+  displayPhone: string;
+  name: string | null;
+  email: string | null;
+  tags: string[];
+  notes: string | null;
+  source: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewsletterSubscriber {
+  id: string;
+  email: string;
+  source: string;
+  createdAt: string;
+}
+
+export interface SmsTemplate {
+  id: string;
+  name: string;
+  body: string;
+  description: string | null;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type SmsCampaignStatus = 'DRAFT' | 'SENDING' | 'SENT' | 'CANCELLED';
+
+export interface SmsCampaign {
+  id: string;
+  name: string;
+  description: string | null;
+  status: SmsCampaignStatus;
+  templateId: string | null;
+  templateName: string | null;
+  body: string;
+  goldenTicketCampaignId: string | null;
+  sentAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  recipientCount: number;
+  sentCount: number;
+  failedCount: number;
+  skippedCount: number;
+}
+
+export interface SmsCampaignDetail extends SmsCampaign {
+  recipients: Array<{
+    id: string;
+    phone: string;
+    name: string | null;
+    status: string;
+    messageBody: string | null;
+    error: string | null;
+    sentAt: string | null;
+  }>;
+}
+
+export type SmsHubDeliveryOutcome = 'SENT' | 'FAILED' | 'SKIPPED';
+
+export interface SmsHubDelivery {
+  id: string;
+  createdAt: string;
+  outcome: SmsHubDeliveryOutcome;
+  to: string;
+  from: string;
+  content: string;
+  contentPreview: string;
+  messageId: string | null;
+  hubtelStatus: number | null;
+  statusDescription: string | null;
+  networkId: string | null;
+  rate: number | null;
+  clientReference: string | null;
+  error: string | null;
+  meta?: Record<string, string | null | undefined>;
+}
+
+export interface SmsHubStatus {
+  enabled: boolean;
+  stats: Record<SmsHubDeliveryOutcome | 'TOTAL', number>;
 }
 
 /** A listing on the website's public events calendar. */

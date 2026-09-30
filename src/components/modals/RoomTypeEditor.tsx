@@ -153,7 +153,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
 
         {/* Basics */}
         <section className="space-y-3">
-          <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">Details guests see</div>
+          <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">Details guests see</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Field label="Name *">
               <input required minLength={2} maxLength={80} className={inputClass} value={form.name} onChange={set('name')} placeholder="e.g. Garden Suite" />
@@ -161,7 +161,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
             {creating ? (
               <Field label="Web address">
                 <div className="flex items-center gap-1">
-                  <span className="text-[#707881] shrink-0">/rooms/</span>
+                  <span className="text-[#786f62] shrink-0">/rooms/</span>
                   <input
                     className={inputClass}
                     value={form.slug}
@@ -169,11 +169,11 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
                     onChange={(event) => setForm({ ...form, slug: slugify(event.target.value) })}
                   />
                 </div>
-                <span className="text-[10px] text-[#707881] font-normal">Fixed once created so shared links keep working.</span>
+                <span className="text-[10px] text-[#786f62] font-normal">Fixed once created so shared links keep working.</span>
               </Field>
             ) : (
               <Field label="Web address">
-                <div className={`${inputClass} flex items-center bg-[#f2f3ff] text-[#707881]`}>/rooms/{roomType.slug}</div>
+                <div className={`${inputClass} flex items-center bg-[#e7ddd0] text-[#786f62]`}>/rooms/{roomType.slug}</div>
               </Field>
             )}
           </div>
@@ -181,7 +181,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
             <textarea
               rows={4}
               maxLength={4000}
-              className="w-full p-2.5 rounded-lg border border-[#bfc7d2]/60 text-xs focus:border-[#006194] focus:outline-none"
+              className="w-full p-2.5 rounded-lg border border-[#cfc4b4]/60 text-xs focus:border-[#d99d26] focus:outline-none"
               value={form.description}
               onChange={set('description')}
               placeholder="What makes this room special — space, light, view, what's included."
@@ -205,7 +205,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
             <Field label="Position in listings">
               <input type="number" min={0} max={1000} className={inputClass} value={form.sortOrder} onChange={set('sortOrder')} placeholder="Last" />
             </Field>
-            <label className="flex items-center gap-2 h-9 font-semibold text-[#111a36] cursor-pointer">
+            <label className="flex items-center gap-2 h-9 font-semibold text-[#161410] cursor-pointer">
               <input type="checkbox" checked={form.isActive} onChange={(event) => setForm({ ...form, isActive: event.target.checked })} />
               Show on website and accept bookings
             </label>
@@ -213,11 +213,11 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
         </section>
 
         {/* Photos */}
-        <section className="space-y-3 pt-4 border-t border-[#ebedff]">
+        <section className="space-y-3 pt-4 border-t border-[#e7ddd0]">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">Photos</div>
-              <p className="text-[11px] text-[#707881]">The first photo is the cover on the website. JPEG, PNG or WebP.</p>
+              <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">Photos</div>
+              <p className="text-[11px] text-[#786f62]">The first photo is the cover on the website. JPEG, PNG or WebP.</p>
             </div>
             <button type="button" onClick={() => fileInput.current?.click()} className={buttonClass.secondary} disabled={uploading > 0}>
               <Icon name="add_photo_alternate" className="text-[16px]" />
@@ -234,17 +234,17 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
           </div>
           <ErrorNote message={uploadError} />
           {photos.length === 0 ? (
-            <div className="p-6 rounded-xl border border-dashed border-[#bfc7d2] text-center text-[#707881]">
+            <div className="p-6 rounded-xl border border-dashed border-[#cfc4b4] text-center text-[#786f62]">
               No photos yet — rooms with photos get far more bookings.
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {photos.map((photo, index) => (
-                <div key={photo.url} className="rounded-xl border border-[#bfc7d2]/40 overflow-hidden bg-white">
-                  <div className="relative aspect-[4/3] bg-[#f2f3ff]">
+                <div key={photo.url} className="rounded-xl border border-[#cfc4b4]/40 overflow-hidden bg-white">
+                  <div className="relative aspect-[4/3] bg-[#e7ddd0]">
                     <img src={mediaSrc(photo.url)} alt={photo.alt} className="absolute inset-0 w-full h-full object-cover" />
                     {index === 0 ? (
-                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#006194] text-white text-[10px] font-bold">Cover</span>
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#d99d26] text-white text-[10px] font-bold">Cover</span>
                     ) : null}
                   </div>
                   <div className="p-2 space-y-1.5">
@@ -288,8 +288,8 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
         </section>
 
         {/* Amenities */}
-        <section className="space-y-3 pt-4 border-t border-[#ebedff]">
-          <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">Amenities</div>
+        <section className="space-y-3 pt-4 border-t border-[#e7ddd0]">
+          <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">Amenities</div>
           <ErrorNote message={amenities.error || addAmenity.error} />
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {(amenities.data ?? []).map((amenity) => {
@@ -298,7 +298,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
                 <label
                   key={amenity.id}
                   className={`p-2 rounded-lg border flex items-center gap-2 cursor-pointer ${
-                    checked ? 'border-[#006194] bg-[#cce5ff]/30' : 'border-[#bfc7d2]/40 hover:bg-[#f2f3ff]'
+                    checked ? 'border-[#d99d26] bg-[#e7ddd0]/30' : 'border-[#cfc4b4]/40 hover:bg-[#e7ddd0]'
                   }`}
                 >
                   <input
@@ -308,7 +308,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
                       setAmenityIds((ids) => (checked ? ids.filter((id) => id !== amenity.id) : [...ids, amenity.id]))
                     }
                   />
-                  <Icon name={amenitySymbol(amenity.icon)} className="text-[16px] text-[#006194]" />
+                  <Icon name={amenitySymbol(amenity.icon)} className="text-[16px] text-[#d99d26]" />
                   {amenity.name}
                 </label>
               );
@@ -343,11 +343,11 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
         </section>
 
         {/* Rooms */}
-        <section className="space-y-3 pt-4 border-t border-[#ebedff]">
-          <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">Rooms of this type</div>
+        <section className="space-y-3 pt-4 border-t border-[#e7ddd0]">
+          <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">Rooms of this type</div>
           {creating ? (
             <>
-              <p className="text-[11px] text-[#707881]">
+              <p className="text-[11px] text-[#786f62]">
                 Each physical room adds one room to sell per night. You can also add rooms later from the room matrix.
               </p>
               {rooms.map((room, index) => (
@@ -390,9 +390,9 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
           ) : (
             <div className="flex flex-wrap gap-2">
               {roomType.rooms.filter((room) => room.isActive).map((room) => (
-                <span key={room.id} className="px-2 py-1 rounded bg-[#f2f3ff] text-[#3f4850] font-semibold">
+                <span key={room.id} className="px-2 py-1 rounded bg-[#e7ddd0] text-[#3c3832] font-semibold">
                   {room.name}
-                  {room.floor ? <span className="font-normal text-[#707881]"> · {room.floor}</span> : null}
+                  {room.floor ? <span className="font-normal text-[#786f62]"> · {room.floor}</span> : null}
                   {room.maintenance ? <span className="text-[#ba1a1a]"> · out of service</span> : null}
                 </span>
               ))}
@@ -402,7 +402,7 @@ export const RoomTypeEditor: React.FC<RoomTypeEditorProps> = ({ roomType, onClos
         </section>
 
         {creating && form.name ? (
-          <p className="text-[11px] text-[#707881]">
+          <p className="text-[11px] text-[#786f62]">
             Will appear at <strong>/rooms/{slug}</strong>
             {form.basePrice ? ` from ${formatMoney(form.basePrice, currency)} per night` : ''}
             {form.isActive ? '' : ' once you make it visible'}.

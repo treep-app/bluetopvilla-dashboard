@@ -35,7 +35,7 @@ export const ChangePasswordModal: React.FC<{ onClose: () => void }> = ({ onClose
       {done ? (
         <div className="text-center space-y-3 py-4">
           <Icon name="check_circle" className="text-4xl text-emerald-600" />
-          <div className="font-bold text-sm text-[#111a36]">Password changed</div>
+          <div className="font-bold text-sm text-[#161410]">Password changed</div>
           <button onClick={onClose} className={`${buttonClass.primary} mx-auto`}>
             Done
           </button>
@@ -52,7 +52,7 @@ export const ChangePasswordModal: React.FC<{ onClose: () => void }> = ({ onClose
           <Field label="Confirm new password">
             <input required type="password" autoComplete="new-password" className={inputClass} value={form.confirm} onChange={set('confirm')} />
           </Field>
-          <p className="text-[11px] text-[#707881]">At least 10 characters, including a letter and a number.</p>
+          <p className="text-[11px] text-[#786f62]">At least 10 characters, including a letter and a number.</p>
           <div className="pt-2 flex justify-between">
             <button type="button" onClick={onClose} className={buttonClass.secondary}>
               Cancel

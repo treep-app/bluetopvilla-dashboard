@@ -37,15 +37,15 @@ export const ActivityDrawer: React.FC<{ onClose: () => void; onOpenBooking: (boo
                 key={item.id}
                 disabled={!clickable}
                 onClick={() => item.bookingId && onOpenBooking(item.bookingId)}
-                className={`w-full text-left p-3 rounded-xl border border-[#bfc7d2]/30 bg-[#faf8ff] flex gap-3 ${
-                  clickable ? 'hover:bg-[#f2f3ff]' : 'cursor-default'
+                className={`w-full text-left p-3 rounded-xl border border-[#cfc4b4]/30 bg-[#f4efe6] flex gap-3 ${
+                  clickable ? 'hover:bg-[#e7ddd0]' : 'cursor-default'
                 }`}
               >
-                <Icon name={KIND_ICON[item.kind]} className="text-[18px] text-[#006194] mt-0.5" />
+                <Icon name={KIND_ICON[item.kind]} className="text-[18px] text-[#d99d26] mt-0.5" />
                 <span className="min-w-0">
-                  <span className="block font-bold text-[#111a36] first-letter:uppercase">{item.title}</span>
-                  {item.detail ? <span className="block text-[11px] text-[#3f4850] truncate">{item.detail}</span> : null}
-                  <span className="block text-[10px] text-[#707881] mt-0.5">{formatDateTime(item.at, property?.timezone)}</span>
+                  <span className="block font-bold text-[#161410] first-letter:uppercase">{item.title}</span>
+                  {item.detail ? <span className="block text-[11px] text-[#3c3832] truncate">{item.detail}</span> : null}
+                  <span className="block text-[10px] text-[#786f62] mt-0.5">{formatDateTime(item.at, property?.timezone)}</span>
                 </span>
               </button>
             );

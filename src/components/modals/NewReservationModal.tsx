@@ -58,7 +58,7 @@ export const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClos
           <ErrorNote message={create.error} />
 
           <div className="space-y-3">
-            <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">1. Stay</div>
+            <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">1. Stay</div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <Field label="Check-in">
                 <input type="date" min={today} required className={inputClass} value={checkIn} onChange={(e) => setStay({ ...stay, checkIn: e.target.value })} />
@@ -76,7 +76,7 @@ export const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClos
           </div>
 
           <div className="space-y-2">
-            <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">2. Room type</div>
+            <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">2. Room type</div>
             {!validDates ? (
               <p className="text-[#ba1a1a]">Choose a check-out after check-in, starting today or later.</p>
             ) : availability.loading ? (
@@ -91,14 +91,14 @@ export const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClos
                   <label
                     key={option.id}
                     className={`p-3 rounded-xl border cursor-pointer flex items-center justify-between ${
-                      selected?.id === option.id ? 'border-[#006194] bg-[#cce5ff]/30 ring-1 ring-[#006194]' : 'border-[#bfc7d2]/40 hover:bg-[#f2f3ff]'
+                      selected?.id === option.id ? 'border-[#d99d26] bg-[#e7ddd0]/30 ring-1 ring-[#d99d26]' : 'border-[#cfc4b4]/40 hover:bg-[#e7ddd0]'
                     }`}
                   >
                     <span className="flex items-center gap-2">
                       <input type="radio" name="roomType" checked={selected?.id === option.id} onChange={() => setRoomTypeId(option.id)} />
                       <span>
-                        <span className="font-bold text-[#111a36]">{option.name}</span>
-                        <span className="block text-[11px] text-[#707881]">
+                        <span className="font-bold text-[#161410]">{option.name}</span>
+                        <span className="block text-[11px] text-[#786f62]">
                           Sleeps {option.occupancy} · {option.availableUnits} available · {formatMoney(option.nightly, availability.data!.currency)}/night
                         </span>
                       </span>
@@ -111,7 +111,7 @@ export const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClos
           </div>
 
           <div className="space-y-3">
-            <div className="text-[11px] font-bold text-[#707881] uppercase tracking-wider">3. Guest</div>
+            <div className="text-[11px] font-bold text-[#786f62] uppercase tracking-wider">3. Guest</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="First name *">
                 <input required maxLength={80} className={inputClass} value={guest.firstName} onChange={(e) => setGuest({ ...guest, firstName: e.target.value })} />
@@ -137,7 +137,7 @@ export const NewReservationModal: React.FC<NewReservationModalProps> = ({ onClos
             </div>
           </div>
 
-          <div className="pt-4 border-t border-[#ebedff] flex items-center justify-between gap-3">
+          <div className="pt-4 border-t border-[#e7ddd0] flex items-center justify-between gap-3">
             <button type="button" onClick={onClose} className={buttonClass.secondary}>
               Cancel
             </button>

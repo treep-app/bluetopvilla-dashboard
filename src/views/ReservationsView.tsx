@@ -70,7 +70,7 @@ export const ReservationsView: React.FC<ReservationsViewProps> = ({
         <button
           disabled={checkOut.pending}
           onClick={() => void checkOut.run(booking.id)}
-          className="px-3 py-2 rounded-lg bg-[#565d79] hover:bg-[#262f4c] text-white text-xs font-semibold disabled:opacity-50"
+          className="px-3 py-2 rounded-lg bg-[#2a3540] hover:bg-[#1b2c38] text-white text-xs font-semibold disabled:opacity-50"
         >
           Check out
         </button>
@@ -100,7 +100,7 @@ export const ReservationsView: React.FC<ReservationsViewProps> = ({
 
       <Card className="p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="relative flex-1 max-w-md">
-          <Icon name="search" className="absolute left-3 top-2 text-[#707881] text-[18px]" />
+          <Icon name="search" className="absolute left-3 top-2 text-[#786f62] text-[18px]" />
           <input
             type="search"
             placeholder="Search by guest, reference, email or phone…"
@@ -150,7 +150,7 @@ export const ReservationsView: React.FC<ReservationsViewProps> = ({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#f2f3ff] text-[#707881] uppercase text-[10px] font-bold border-b border-[#bfc7d2]/30 tracking-wider">
+              <thead className="bg-[#e7ddd0] text-[#786f62] uppercase text-[10px] font-bold border-b border-[#cfc4b4]/30 tracking-wider">
                 <tr>
                   <th className="p-3.5">Guest / reference</th>
                   <th className="p-3.5">Room</th>
@@ -161,46 +161,46 @@ export const ReservationsView: React.FC<ReservationsViewProps> = ({
                   <th className="p-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ebedff]">
+              <tbody className="divide-y divide-[#e7ddd0]">
                 {bookings.data.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-[#faf8ff] transition-colors">
+                  <tr key={booking.id} className="hover:bg-[#f4efe6] transition-colors">
                     <td className="p-3.5">
-                      <div className="font-bold text-[#111a36]">{booking.guest.name}</div>
-                      <div className="text-[11px] text-[#707881] mt-0.5">
-                        <span className="font-semibold text-[#006194]">{booking.reference}</span> · {booking.guest.phone}
+                      <div className="font-bold text-[#161410]">{booking.guest.name}</div>
+                      <div className="text-[11px] text-[#786f62] mt-0.5">
+                        <span className="font-semibold text-[#d99d26]">{booking.reference}</span> · {booking.guest.phone}
                       </div>
                     </td>
                     <td className="p-3.5">
                       {booking.rooms.map((room, index) => (
                         <div key={index}>
                           {room.roomId ? (
-                            <button onClick={() => onSelectRoom(room.roomId!)} className="font-bold text-[#006194] hover:underline">
+                            <button onClick={() => onSelectRoom(room.roomId!)} className="font-bold text-[#d99d26] hover:underline">
                               {room.roomName}
                             </button>
                           ) : (
-                            <span className="text-[#707881]">Unassigned</span>
+                            <span className="text-[#786f62]">Unassigned</span>
                           )}
-                          <span className="text-[11px] text-[#707881] block">{room.roomTypeName}</span>
+                          <span className="text-[11px] text-[#786f62] block">{room.roomTypeName}</span>
                         </div>
                       ))}
                     </td>
                     <td className="p-3.5">
-                      <div className="font-medium text-[#111a36]">
+                      <div className="font-medium text-[#161410]">
                         {formatDay(booking.checkIn)} → {formatDay(booking.checkOut)}
                       </div>
-                      <div className="text-[11px] text-[#707881]">
+                      <div className="text-[11px] text-[#786f62]">
                         {booking.nights} night(s) · {booking.adults + booking.children} guest(s)
                       </div>
                     </td>
                     <td className="p-3.5">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#ebedff] text-[#3f4850]">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#e7ddd0] text-[#3c3832]">
                         {SOURCE_LABELS[booking.source] ?? booking.source}
                       </span>
                     </td>
                     <td className="p-3.5">
-                      <div className="font-bold text-[#111a36] tabular-nums">{formatMoney(booking.total, booking.currency)}</div>
+                      <div className="font-bold text-[#161410] tabular-nums">{formatMoney(booking.total, booking.currency)}</div>
                       {['cancelled', 'expired', 'no_show'].includes(booking.stage) ? (
-                        <span className="text-[11px] text-[#707881]">
+                        <span className="text-[11px] text-[#786f62]">
                           {Number(booking.paid) > 0 ? `Paid ${formatMoney(booking.paid, booking.currency)}` : 'Not charged'}
                         </span>
                       ) : Number(booking.balance) > 0 ? (
