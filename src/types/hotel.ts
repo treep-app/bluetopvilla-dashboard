@@ -544,6 +544,8 @@ export interface CalendarEvent {
   recurrenceTime: string | null;
   location: string | null;
   imageUrl: string | null;
+  priceFrom: number | null;
+  priceNote: string | null;
   isPublic: boolean;
   reservations?: number;
   isPast?: boolean;

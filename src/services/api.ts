@@ -105,6 +105,8 @@ export type EventInput = {
   recurrenceTime: string | null;
   location: string;
   imageUrl: string | null;
+  priceFrom: number | null;
+  priceNote: string | null;
   isPublic: boolean;
 };
 

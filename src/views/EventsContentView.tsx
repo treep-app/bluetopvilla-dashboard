@@ -4,6 +4,7 @@ import { useApi, useMutation } from '../hooks/useApi';
 import { api } from '../services/api';
 import type { CalendarEvent, EventSpace, EventType } from '../types/hotel';
 import { eventSchedule, mediaSrc, WEEKDAYS } from '../lib/format';
+import { EventShareTools } from '../components/EventShareTools';
 import { ImageField } from '../components/ImageField';
 import { buttonClass, Card, Empty, ErrorNote, Field, Icon, inputClass, Loading, Modal, PageHeader, Tabs } from '../components/ui';
 
@@ -64,9 +65,10 @@ const DeleteButton: React.FC<{ label: string; onDelete: () => Promise<unknown> }
 
 // ------------------------------------------------------------------ calendar
 
-const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; onClose: () => void }> = ({
+const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; site: string; onClose: () => void }> = ({
   event,
   types,
+  site,
   onClose,
 }) => {
   const [form, setForm] = useState({
@@ -80,14 +82,20 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
     startsAt: event?.startsAt ?? '',
     recurrenceDays: event?.recurrenceDays ?? [],
     recurrenceTime: event?.recurrenceTime ?? '',
+    priceFrom: event?.priceFrom != null ? String(event.priceFrom) : '',
+    priceNote: event?.priceNote ?? '',
   });
   const save = useMutation(async () => {
+    const priceRaw = form.priceFrom.trim();
+    const priceFrom = priceRaw === '' ? null : Number(priceRaw);
     const body = {
       title: form.title.trim(),
       description: form.description,
       eventType: form.eventType.trim(),
       location: form.location,
       imageUrl: form.imageUrl,
+      priceFrom: priceFrom != null && !Number.isNaN(priceFrom) ? priceFrom : null,
+      priceNote: form.priceNote.trim() || null,
       isPublic: form.isPublic,
       startsAt: form.mode === 'once' ? form.startsAt : null,
       recurrenceDays: form.mode === 'weekly' ? form.recurrenceDays : [],
@@ -112,7 +120,7 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
   return (
     <Modal
       title={event ? `Edit ${event.title}` : 'New event'}
-      subtitle="Listed in the public calendar on /events"
+      subtitle="Published on /whats-on (guest event hub) and promoted from /events"
       icon="event"
       onClose={onClose}
       width="max-w-2xl"
@@ -191,6 +199,28 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
           )}
         </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Field label="Ticket / cover price (GHS)">
+            <input
+              type="number"
+              min={0}
+              step={1}
+              className={inputClass}
+              value={form.priceFrom}
+              onChange={(e) => setForm({ ...form, priceFrom: e.target.value })}
+              placeholder="e.g. 150 — leave empty for “on request”"
+            />
+          </Field>
+          <Field label="Price note">
+            <input
+              maxLength={80}
+              className={inputClass}
+              value={form.priceNote}
+              onChange={(e) => setForm({ ...form, priceNote: e.target.value })}
+              placeholder="e.g. per person · includes welcome drink"
+            />
+          </Field>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
           <Field label="Where at the villa">
             <input maxLength={120} className={inputClass} value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="e.g. Poolside terrace" />
@@ -201,12 +231,28 @@ const EventEditor: React.FC<{ event: CalendarEvent | null; types: EventType[]; o
           </label>
         </div>
         <ImageField value={form.imageUrl} onChange={(imageUrl) => setForm({ ...form, imageUrl })} />
+        {event && form.isPublic ? (
+          <EventShareTools
+            site={site}
+            slug={event.slug}
+            title={form.title.trim() || event.title}
+            schedule={eventSchedule(event)}
+          />
+        ) : event ? (
+          <p className="text-[11px] text-[#786f62] rounded-lg border border-dashed border-[#cfc4b4]/60 px-3 py-2">
+            Enable <strong>Show on the website</strong> to copy a public link for WhatsApp, Facebook, and other channels.
+          </p>
+        ) : (
+          <p className="text-[11px] text-[#786f62] rounded-lg border border-dashed border-[#cfc4b4]/60 px-3 py-2">
+            After you create the event, open it again here to copy the share link for social media.
+          </p>
+        )}
       </form>
     </Modal>
   );
 };
 
-const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
+const CalendarTab: React.FC<{ canEdit: boolean; site: string }> = ({ canEdit, site }) => {
   const events = useApi(() => api.events());
   const types = useApi(() => api.eventTypes());
   const [editing, setEditing] = useState<CalendarEvent | null | undefined>(undefined);
@@ -218,7 +264,7 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs text-[#786f62]">
-          Hosted events guests can attend — live music, brunches, party nights. Past one-off events leave the website automatically.
+          Guest-facing listings on /whats-on — live music, brunches, party nights. Past one-offs drop off automatically.
         </p>
         {canEdit ? (
           <button onClick={() => setEditing(null)} className={buttonClass.primary}>
@@ -232,7 +278,7 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
         <Loading />
       ) : !list.length ? (
         <Card>
-          <Empty icon="event" title="No events on the calendar" detail="The website shows a “request venue hire” message until you add one." />
+          <Empty icon="event" title="No hosted events yet" detail="Guests see an empty state on /whats-on until you add a public listing." />
         </Card>
       ) : (
         <div className="space-y-3">
@@ -251,6 +297,15 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
                   {event.reservations ? ` · ${event.reservations} reservation(s)` : ''}
                 </div>
                 {event.description ? <p className="text-[#3c3832] line-clamp-2">{event.description}</p> : null}
+                {event.isPublic && !event.isPast ? (
+                  <EventShareTools
+                    site={site}
+                    slug={event.slug}
+                    title={event.title}
+                    schedule={eventSchedule(event)}
+                    compact
+                  />
+                ) : null}
               </div>
               {canEdit ? (
                 <div className="flex flex-col items-end gap-2 text-xs">
@@ -270,7 +325,9 @@ const CalendarTab: React.FC<{ canEdit: boolean }> = ({ canEdit }) => {
           {showPast ? 'Hide past events' : `Show ${pastCount} past event(s)`}
         </button>
       ) : null}
-      {editing !== undefined ? <EventEditor event={editing} types={types.data ?? []} onClose={() => setEditing(undefined)} /> : null}
+      {editing !== undefined ? (
+        <EventEditor event={editing} types={types.data ?? []} site={site} onClose={() => setEditing(undefined)} />
+      ) : null}
     </div>
   );
 };
@@ -580,27 +637,31 @@ export const EventsContentView: React.FC = () => {
   return (
     <div className="p-8 space-y-6 max-w-6xl mx-auto pb-16">
       <PageHeader
-        title="Events page"
-        subtitle="Everything on the website's /events page — the calendar, event types and venue spaces"
+        title="Website events"
+        subtitle="Hosted listings (/whats-on), venue marketing (/events), and hire spaces"
         actions={
           <>
             <Tabs
               value={tab}
               onChange={setTab}
               options={[
-                { value: 'calendar', label: 'Calendar' },
+                { value: 'calendar', label: 'Hosted events' },
                 { value: 'types', label: 'Event types' },
                 { value: 'spaces', label: 'Spaces' },
               ]}
             />
+            <a href={`${site}/whats-on`} target="_blank" rel="noreferrer" className={buttonClass.secondary}>
+              <Icon name="open_in_new" className="text-[16px]" />
+              What&apos;s on
+            </a>
             <a href={`${site}/events`} target="_blank" rel="noreferrer" className={buttonClass.secondary}>
               <Icon name="open_in_new" className="text-[16px]" />
-              View page
+              Venue page
             </a>
           </>
         }
       />
-      {tab === 'calendar' && <CalendarTab canEdit={canEdit} />}
+      {tab === 'calendar' && <CalendarTab canEdit={canEdit} site={site} />}
       {tab === 'types' && <EventTypesTab canEdit={canEdit} />}
       {tab === 'spaces' && <SpacesTab canEdit={canEdit} />}
     </div>
