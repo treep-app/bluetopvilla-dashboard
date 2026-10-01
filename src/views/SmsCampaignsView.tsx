@@ -14,8 +14,9 @@ const STATUS_BADGE: Record<string, string> = {
 };
 
 export const SmsCampaignsView: React.FC = () => {
-  const { hasPermission, property } = useHotel();
+  const { hasPermission, currentUser, property } = useHotel();
   const canManage = hasPermission('canManagePromotions');
+  const isSuperAdmin = Boolean(currentUser?.roles?.includes('SUPER_ADMIN'));
   const campaigns = useApi(() => api.smsCampaigns(), [], true);
   const templates = useApi(() => api.smsTemplates(), [], true);
   const coupons = useApi(() => api.goldenTicketCampaigns(), [], true);
@@ -24,6 +25,7 @@ export const SmsCampaignsView: React.FC = () => {
   const create = useMutation(api.createSmsCampaign);
   const send = useMutation(api.sendSmsCampaign);
   const cancel = useMutation(api.cancelSmsCampaign);
+  const remove = useMutation(api.deleteSmsCampaign);
   const createCoupon = useMutation(api.createCouponCampaign);
 
   const [notice, setNotice] = useState<string | null>(null);
@@ -195,6 +197,17 @@ export const SmsCampaignsView: React.FC = () => {
     await campaigns.reload();
   };
 
+  const onDelete = async (campaign: SmsCampaign) => {
+    if (!window.confirm(`Permanently delete “${campaign.name}” and all its recipient records? This cannot be undone.`)) return;
+    const result = await remove.run(campaign.id);
+    if (!result) {
+      setNotice(remove.error || 'Could not delete campaign.');
+      return;
+    }
+    setNotice(`Campaign “${campaign.name}” deleted.`);
+    await campaigns.reload();
+  };
+
   const openDetail = async (id: string) => {
     try {
       setDetail(await api.smsCampaign(id));
@@ -323,6 +336,11 @@ export const SmsCampaignsView: React.FC = () => {
                             Cancel
                           </button>
                         </>
+                      ) : null}
+                      {isSuperAdmin ? (
+                        <button type="button" className="text-[11px] font-bold text-[#ba1a1a]" onClick={() => void onDelete(campaign)}>
+                          Delete
+                        </button>
                       ) : null}
                     </td>
                   </tr>

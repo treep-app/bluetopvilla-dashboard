@@ -306,6 +306,7 @@ export const api = {
       post(),
     ),
   cancelSmsCampaign: (id: string) => request(`/admin/marketing/sms-campaigns/${id}/cancel`, post()),
+  deleteSmsCampaign: (id: string) => request<{ ok: boolean }>(`/admin/marketing/sms-campaigns/${id}`, del),
 
   // Hubtel SMS delivery log (Redis)
   smsStatus: () => request<SmsHubStatus>('/admin/sms/status'),
