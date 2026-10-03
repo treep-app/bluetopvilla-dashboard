@@ -73,6 +73,7 @@ export type NewDeskBooking = {
   phone: string;
   specialRequests?: string;
   source: 'desk' | 'phone';
+  promoCode?: string;
 };
 
 export type AvailabilityResult = {
@@ -149,11 +150,27 @@ export const api = {
   bookings: (params: BookingQuery = {}) => request<Booking[]>(`/admin/bookings${query(params)}`),
   booking: (id: string) => request<BookingDetail>(`/admin/bookings/${id}`),
   createBooking: (body: NewDeskBooking) => request<BookingDetail>('/admin/bookings', post(body)),
+  validatePromo: (code: string) =>
+    request<{ ticketId: string; promoCode: string; offerTitle: string; discountPercent: number; expiresAt: string; guestName: string | null }>(
+      `/golden-tickets/promo?code=${encodeURIComponent(code)}`,
+    ),
   checkIn: (id: string, roomIds: string[]) => request<BookingDetail>(`/admin/bookings/${id}/check-in`, post({ roomIds })),
   checkOut: (id: string) => request<BookingDetail>(`/admin/bookings/${id}/check-out`, post()),
   cancelBooking: (id: string) => request<BookingDetail>(`/admin/bookings/${id}/cancel`, post()),
-  recordPayment: (id: string, amount: number, method: DeskPaymentMethod) =>
-    request<BookingDetail>(`/admin/bookings/${id}/payments`, post({ amount, method })),
+  recordPayment: (id: string, amount: number, method: DeskPaymentMethod, reference?: string) =>
+    request<BookingDetail>(`/admin/bookings/${id}/payments`, post({ amount, method, reference: reference?.trim() || undefined })),
+  initiateDeskMomo: (
+    id: string,
+    body: { amount: number; channel?: string; msisdn?: string },
+  ) =>
+    request<{ paymentId: string; clientReference: string; amount: number; channel: string; message: string }>(
+      `/admin/bookings/${id}/payments/mobile-money`,
+      post(body),
+    ),
+  checkDeskMomo: (id: string, paymentId: string) =>
+    request<{ paymentId: string; status: string; amount: string; method: string | null; paidAt: string | null }>(
+      `/admin/bookings/${id}/payments/mobile-money/${paymentId}`,
+    ),
 
   roomTypes: () => request<RoomTypeDetail[]>('/admin/room-types'),
   updateRate: (id: string, basePrice: number) => request<RoomTypeDetail>(`/admin/room-types/${id}`, patch({ basePrice })),

@@ -68,6 +68,15 @@ export const ROOM_STATUS_BADGE: Record<RoomStatus, string> = {
   oos: 'bg-[#ffdad6] text-[#93000a]',
 };
 
+/** Solid legend colours — used for room-card accent bars and the legend chips. */
+export const ROOM_STATUS_DOT: Record<RoomStatus, string> = {
+  occupied: 'bg-[#1b2c38]',
+  clean: 'bg-emerald-600',
+  cleaning: 'bg-[#e88b1a]',
+  dirty: 'bg-amber-500',
+  oos: 'bg-[#ba1a1a]',
+};
+
 export const PAYMENT_METHOD_LABELS: Record<string, string> = {
   cash: 'Cash',
   mobile_money: 'Mobile money',

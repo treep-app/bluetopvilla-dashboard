@@ -120,6 +120,7 @@ export interface BookingDetail extends Booking {
     id: string;
     provider: PaymentProvider;
     method: string | null;
+    reference: string | null;
     status: PaymentStatus;
     amount: string;
     refunded: string;

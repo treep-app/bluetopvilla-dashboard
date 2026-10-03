@@ -3,7 +3,7 @@ import { useHotel } from '../context/HotelContext';
 import { useApi } from '../hooks/useApi';
 import { api } from '../services/api';
 import type { RoomStatus } from '../types/hotel';
-import { formatDateTime, formatMoney, ROOM_STATUS_BADGE, ROOM_STATUS_LABELS } from '../lib/format';
+import { formatDateTime, formatMoney, ROOM_STATUS_BADGE, ROOM_STATUS_DOT, ROOM_STATUS_LABELS } from '../lib/format';
 import { buttonClass, Card, Empty, ErrorNote, Icon, Loading, PageHeader } from '../components/ui';
 import { AddRoomModal } from '../components/modals/AddRoomModal';
 
@@ -67,7 +67,10 @@ export const RoomMatrixView: React.FC<RoomMatrixViewProps> = ({ mode, onSelectRo
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
         {(['clean', 'occupied', 'dirty', 'cleaning', 'oos'] as const).map((status) => (
           <Card key={status} className="p-3">
-            <span className="text-[#786f62]">{ROOM_STATUS_LABELS[status]}</span>
+            <span className="inline-flex items-center gap-1.5 text-[#786f62]">
+              <span className={`inline-block h-2.5 w-2.5 rounded-full ${ROOM_STATUS_DOT[status]}`} />
+              {ROOM_STATUS_LABELS[status]}
+            </span>
             <div className="text-lg font-bold text-[#161410]">{count(status)}</div>
           </Card>
         ))}
@@ -113,11 +116,16 @@ export const RoomMatrixView: React.FC<RoomMatrixViewProps> = ({ mode, onSelectRo
             <button
               key={room.id}
               onClick={() => onSelectRoom(room.id)}
-              className="p-4 rounded-xl bg-white border border-[#cfc4b4]/40 hover:border-[#d99d26] hover:shadow-md text-left transition-all flex flex-col justify-between min-h-40 shadow-xs"
+              className={`relative p-4 pt-5 rounded-xl bg-white border border-[#cfc4b4]/40 hover:border-[#d99d26] hover:shadow-md text-left transition-all flex flex-col justify-between min-h-40 shadow-xs overflow-hidden`}
             >
+              {/* Status colour bar — matches the legend so each rack tile is identifiable at a glance */}
+              <span className={`absolute inset-x-0 top-0 h-1.5 ${ROOM_STATUS_DOT[room.status]}`} aria-hidden />
               <div>
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-lg font-bold text-[#d99d26]">{room.name}</span>
+                  <span className="flex items-center gap-2 text-lg font-bold text-[#d99d26]">
+                    <span className={`inline-block h-2.5 w-2.5 rounded-full ${ROOM_STATUS_DOT[room.status]}`} />
+                    {room.name}
+                  </span>
                   <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ROOM_STATUS_BADGE[room.status]}`}>
                     {ROOM_STATUS_LABELS[room.status]}
                   </span>

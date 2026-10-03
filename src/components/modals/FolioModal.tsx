@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHotel } from '../../context/HotelContext';
 import { useApi, useMutation } from '../../hooks/useApi';
 import { api } from '../../services/api';
@@ -20,6 +20,13 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
   const booking = useApi(() => api.booking(bookingId), [bookingId]);
   const [amount, setAmount] = useState('');
   const [method, setMethod] = useState<DeskPaymentMethod>('cash');
+  const [momoChannel, setMomoChannel] = useState('mtn-gh');
+  const [momoMsisdn, setMomoMsisdn] = useState('');
+  const [paymentRef, setPaymentRef] = useState('');
+  const [momo, setMomo] = useState<{ paymentId: string; amount: number; status: string } | null>(null);
+  const [momoError, setMomoError] = useState<string | null>(null);
+  const [momoSuccess, setMomoSuccess] = useState<string | null>(null);
+  const [momoChecking, setMomoChecking] = useState(false);
   const pay = useMutation(api.recordPayment);
   const checkOut = useMutation(api.checkOut);
   const cancel = useMutation(api.cancelBooking);
@@ -32,8 +39,70 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
   const submitPayment = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!b) return;
-    if (await pay.run(b.id, Number(amount || balance), method)) setAmount('');
+    const payAmount = Number(amount || balance);
+    if (method === 'mobile_money') {
+      setMomoError(null);
+      setMomoSuccess(null);
+      setMomoChecking(true);
+      try {
+        const result = await api.initiateDeskMomo(b.id, {
+          amount: payAmount,
+          channel: momoChannel,
+          msisdn: momoMsisdn.trim() || undefined,
+        });
+        setMomo({ paymentId: result.paymentId, amount: result.amount, status: 'PROCESSING' });
+      } catch (err) {
+        setMomoError(err instanceof Error ? err.message : 'Could not send the payment prompt.');
+      } finally {
+        setMomoChecking(false);
+      }
+      return;
+    }
+    if (method === 'card' || method === 'bank_transfer') {
+      if (!paymentRef.trim()) {
+        setMomoError(
+          method === 'card'
+            ? 'Enter the terminal approval code (or last 4 digits of the card).'
+            : 'Enter the bank transaction reference from the slip or app.',
+        );
+        return;
+      }
+    }
+    if (await pay.run(b.id, payAmount, method, paymentRef.trim() || undefined)) {
+      setAmount('');
+      setPaymentRef('');
+      setMomoError(null);
+    }
   };
+
+  const checkMomo = async () => {
+    if (!b || !momo) return;
+    setMomoChecking(true);
+    try {
+      const result = await api.checkDeskMomo(b.id, momo.paymentId);
+      setMomo((prev) => (prev ? { ...prev, status: result.status } : prev));
+      if (result.status === 'PAID') {
+        setMomoSuccess(`Payment of ${money(result.amount)} approved and recorded.`);
+        setMomo(null);
+        await booking.reload();
+      } else if (result.status === 'FAILED') {
+        setMomoError('The guest declined or the payment failed. You can try again.');
+        setMomo(null);
+      }
+    } catch (err) {
+      setMomoError(err instanceof Error ? err.message : 'Could not check payment status.');
+    } finally {
+      setMomoChecking(false);
+    }
+  };
+
+  // Poll Hubtel while a mobile money payment awaits guest approval.
+  useEffect(() => {
+    if (!momo || momo.status !== 'PROCESSING') return;
+    const timer = setInterval(() => void checkMomo(), 5000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [momo?.paymentId, momo?.status, b?.id]);
 
   const confirmCancel = () => {
     if (b && window.confirm(`Cancel ${b.reference}? The room is released for sale. Payments already taken are not refunded automatically.`)) {
@@ -161,6 +230,9 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
                         · {payment.status.toLowerCase().replace('_', ' ')} ·{' '}
                         {formatDateTime(payment.paidAt ?? payment.createdAt, property?.timezone)}
                       </span>
+                      {payment.reference ? (
+                        <span className="block font-mono text-[10px] text-[#786f62]">Ref: {payment.reference}</span>
+                      ) : null}
                     </span>
                     <span className="font-bold tabular-nums">{money(payment.amount)}</span>
                   </div>
@@ -188,7 +260,41 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
             </div>
           </div>
 
-          {canPay ? (
+          {momo ? (
+            <div className="p-4 rounded-xl bg-[#cce5ff]/40 border border-[#006194]/30 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-[#006194]">
+                <Icon name="phone_iphone" className="text-[18px] animate-pulse" />
+                Waiting for guest approval…
+              </div>
+              <p className="text-xs text-[#001d31]">
+                A payment prompt for <strong>{money(momo.amount)}</strong> was sent to the guest's phone. The guest must
+                enter their mobile money PIN to approve. This panel updates automatically.
+              </p>
+              <div className="flex items-center gap-2">
+                <button type="button" onClick={() => void checkMomo()} disabled={momoChecking} className={buttonClass.secondary}>
+                  {momoChecking ? 'Checking…' : 'Check now'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMomo(null);
+                    setMomoError(null);
+                  }}
+                  className={buttonClass.secondary}
+                >
+                  Cancel prompt
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          {momoSuccess ? (
+            <div className="rounded-xl border border-[#0b6b3a]/25 bg-[#d9f2e5] px-3.5 py-2.5 text-xs font-bold text-[#0b6b3a]">
+              ✓ {momoSuccess}
+            </div>
+          ) : null}
+
+          {canPay && !momo ? (
             <form onSubmit={submitPayment} className="p-4 rounded-xl bg-[#e7ddd0]/20 border border-[#d99d26]/30 space-y-3">
               <div className="font-bold text-[#d99d26]">Record a payment taken at the desk</div>
               <div className="grid grid-cols-2 gap-3">
@@ -214,10 +320,72 @@ export const FolioModal: React.FC<FolioModalProps> = ({ bookingId, onClose, onCh
                   </select>
                 </Field>
               </div>
-              <button type="submit" disabled={pay.pending} className={`${buttonClass.primary} w-full`}>
-                <Icon name="payments" className="text-[16px]" />
-                {pay.pending ? 'Recording…' : `Record ${money(amount || balance)}`}
+              {method === 'mobile_money' ? (
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Network">
+                    <select value={momoChannel} onChange={(event) => setMomoChannel(event.target.value)} className={inputClass}>
+                      <option value="mtn-gh">MTN MoMo</option>
+                      <option value="vodafone-gh">Telecel Cash</option>
+                      <option value="tigo-gh">AirtelTigo Money</option>
+                    </select>
+                  </Field>
+                  <Field label="Number to charge">
+                    <input
+                      type="tel"
+                      placeholder={b.guest.phone}
+                      value={momoMsisdn}
+                      onChange={(event) => setMomoMsisdn(event.target.value)}
+                      className={inputClass}
+                    />
+                  </Field>
+                </div>
+              ) : null}
+              {method === 'card' ? (
+                <Field label="Terminal approval code (required)">
+                  <input
+                    className={inputClass}
+                    placeholder="e.g. APPROVED 0054321 or •••• 4242"
+                    maxLength={120}
+                    value={paymentRef}
+                    onChange={(event) => setPaymentRef(event.target.value)}
+                  />
+                </Field>
+              ) : null}
+              {method === 'bank_transfer' ? (
+                <Field label="Bank transaction reference (required)">
+                  <input
+                    className={inputClass}
+                    placeholder="e.g. GTB-882134501"
+                    maxLength={120}
+                    value={paymentRef}
+                    onChange={(event) => setPaymentRef(event.target.value)}
+                  />
+                </Field>
+              ) : null}
+              <ErrorNote message={momoError} />
+              <button type="submit" disabled={pay.pending || momoChecking} className={`${buttonClass.primary} w-full`}>
+                <Icon name={method === 'mobile_money' ? 'phone_iphone' : 'payments'} className="text-[16px]" />
+                {momoChecking
+                  ? 'Sending prompt…'
+                  : method === 'mobile_money'
+                    ? `Charge ${money(amount || balance)} — send prompt to guest`
+                    : pay.pending
+                      ? 'Recording…'
+                      : `Record ${money(amount || balance)}`}
               </button>
+              {method === 'mobile_money' ? (
+                <p className="text-[11px] text-[#786f62]">
+                  The guest gets a prompt on their phone and approves with their MoMo PIN. Payment is recorded automatically
+                  once approved.
+                </p>
+              ) : null}
+              {method === 'card' || method === 'bank_transfer' ? (
+                <p className="text-[11px] text-[#786f62]">
+                  {method === 'card'
+                    ? 'Type the approval code shown on the terminal receipt so the payment can be traced later.'
+                    : 'The reference lets you match this payment against the bank statement later.'}
+                </p>
+              ) : null}
             </form>
           ) : null}
         </>
